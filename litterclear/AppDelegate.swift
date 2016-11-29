@@ -8,9 +8,11 @@
 
 import UIKit
 import Firebase
+import FBSDKLoginKit
+import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     var window: UIWindow?
 
@@ -19,7 +21,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FIRApp.configure()
 
+        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+        
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         return true
+    }
+
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        if let error = error {
+            print("error while trying to sign into google: \(error)")
+            return
+        }
+        print("Successfully signed into google")
+        
+        let authentication = user.authentication
+        let credential = FIRGoogleAuthProvider.credential(withIDToken: (authentication?.idToken)!,
+                                                          accessToken: (authentication?.accessToken)!)
+
+        FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
+            if error != nil {
+                print("LitterApp - Unable to authenticate to firebase")
+            } else {
+                print("LitterApp - Successfully authenticated to firebase \(user!.uid)")
+            }
+        })
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -44,6 +71,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(_ application: UIApplication, openURL: URL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        let handled =  FBSDKApplicationDelegate.sharedInstance().application(application, open: openURL, sourceApplication: sourceApplication, annotation: annotation)
+        
+        GIDSignIn.sharedInstance().handle(openURL,
+                                             sourceApplication: sourceApplication,
+                                             annotation: annotation)
 
+        return handled
+    }
 }
 

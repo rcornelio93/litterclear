@@ -10,4 +10,6 @@ target 'litterclear' do
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
+  pod 'FBSDKLoginKit'
+  pod 'GoogleSignIn'
 end
