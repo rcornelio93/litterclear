@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11523"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -75,7 +76,7 @@
                                     <action selector="loginToFacebook:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ILB-nG-pnH"/>
                                 </connections>
                             </button>
-                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="w3m-Ig-fxW">
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="w3m-Ig-fxW">
                                 <rect key="frame" x="56" y="332" width="283" height="130"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xYE-DH-D0W">
@@ -88,7 +89,7 @@
                                         <rect key="frame" x="0.0" y="50" width="283" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zwB-WU-a7c">
                                         <rect key="frame" x="0.0" y="100" width="283" height="30"/>
@@ -96,12 +97,23 @@
                                         <state key="normal" title="Sign In">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="emailSignIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9xu-so-GqS"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yiN-aC-ZJR">
+                                <rect key="frame" x="167" y="533" width="60" height="30"/>
+                                <state key="normal" title="PROFILE"/>
+                                <connections>
+                                    <segue destination="Xf2-j1-1Hl" kind="show" id="AgG-A4-PwE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="yiN-aC-ZJR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7XE-RS-08J"/>
                             <constraint firstItem="ki0-G8-xRp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9WC-c8-eQc"/>
                             <constraint firstAttribute="trailingMargin" secondItem="w3m-Ig-fxW" secondAttribute="trailing" constant="30" id="AZN-Z6-Ofx"/>
                             <constraint firstItem="w3m-Ig-fxW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="D08-yA-0Ns"/>
@@ -133,13 +145,175 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="aiZ-fX-4bw" secondAttribute="bottom" id="wim-90-Jkx"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="emailaddressField" destination="xYE-DH-D0W" id="24D-je-Ge1"/>
+                        <outlet property="passwordField" destination="edJ-3S-Wbe" id="ZhQ-b4-ZnX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
         </scene>
+        <!--Profile View Controller-->
+        <scene sceneID="MIT-YO-Zv9">
+            <objects>
+                <viewController id="Xf2-j1-1Hl" customClass="ProfileViewController" customModule="litterclear" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GWZ-ty-krE"/>
+                        <viewControllerLayoutGuide type="bottom" id="S6m-sh-BD0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="upO-54-YEC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egy-dL-Oue">
+                                <rect key="frame" x="149.5" y="40" width="76.5" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="7X0-u5-eyz">
+                                <rect key="frame" x="113" y="77" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="KfF-Df-GWb"/>
+                                    <constraint firstAttribute="width" constant="150" id="uqY-vw-3gL"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="SJS-px-PhR">
+                                <rect key="frame" x="16" y="454" width="338" height="133"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4F-CL-dIH">
+                                        <rect key="frame" x="0.0" y="0.0" width="338" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email notification on Litter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wKQ-us-r8G">
+                                                <rect key="frame" x="0.0" y="0.0" width="289" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bht-CN-YLq" userLabel="litterNotificationSwitch">
+                                                <rect key="frame" x="289" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="toggleNotificationOnLitter:" destination="Xf2-j1-1Hl" eventType="valueChanged" id="kmb-RI-sez"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dEj-fb-Miy">
+                                        <rect key="frame" x="0.0" y="51" width="338" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email notification on Status Change" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7b3-Gv-WZu">
+                                                <rect key="frame" x="0.0" y="0.0" width="289" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hdP-UW-PMb" userLabel="statusChangeNotificationSwitch">
+                                                <rect key="frame" x="289" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="toggleNotificationOnStatusChange:" destination="Xf2-j1-1Hl" eventType="valueChanged" id="16V-rO-8xU"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kyZ-We-gVL">
+                                        <rect key="frame" x="0.0" y="102" width="338" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report Anonymously" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ND-aN-Lue">
+                                                <rect key="frame" x="0.0" y="0.0" width="289" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JUq-oZ-Vts" userLabel="reportAnonymousSwitch">
+                                                <rect key="frame" x="289" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="toggleReportAnonymously:" destination="Xf2-j1-1Hl" eventType="valueChanged" id="N0T-bg-YvW"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="432 Dempsey Road, Apt 133, Milpitas, CA - 95035" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5B-Gz-shy">
+                                <rect key="frame" x="88" y="298" width="200" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="DPR-uX-QQe"/>
+                                    <constraint firstAttribute="height" constant="40" id="vQ7-Yd-1Zs"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="vsj-d9-uLB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QnU-cg-WVY" userLabel="fullNameEditButton">
+                                <rect key="frame" x="263" y="264" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="ic_mode_edit_white"/>
+                                <connections>
+                                    <action selector="fullNameEditAlert:" destination="Xf2-j1-1Hl" eventType="touchUpInside" id="QAf-Ye-mwM"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Rayan Cornelio" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l9c-45-lLh" userLabel="nameLabel">
+                                <rect key="frame" x="97" y="262" width="160" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="CAl-gV-7rl"/>
+                                    <constraint firstAttribute="width" constant="200" id="y93-bF-EV3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nUu-sU-y1c" userLabel="addressEditButton">
+                                <rect key="frame" x="296" y="310" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="ic_mode_edit_white"/>
+                                <connections>
+                                    <action selector="addressEditAlert:" destination="Xf2-j1-1Hl" eventType="touchUpInside" id="EBk-mg-Jfj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q9Y-nN-ThO" userLabel="screenNameEditButton">
+                                <rect key="frame" x="241" y="42" width="16" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="ic_mode_edit_white"/>
+                                <connections>
+                                    <action selector="screenNameEditAlert:" destination="Xf2-j1-1Hl" eventType="touchUpInside" id="Sye-3v-AKR"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="S6m-sh-BD0" firstAttribute="top" secondItem="SJS-px-PhR" secondAttribute="bottom" constant="80" id="9Oy-SX-GaX"/>
+                            <constraint firstItem="SJS-px-PhR" firstAttribute="width" secondItem="upO-54-YEC" secondAttribute="width" multiplier="0.9" id="FAr-XA-sID"/>
+                            <constraint firstItem="l9c-45-lLh" firstAttribute="top" secondItem="7X0-u5-eyz" secondAttribute="bottom" constant="30" id="Ojd-Sm-iGw"/>
+                            <constraint firstItem="egy-dL-Oue" firstAttribute="top" secondItem="GWZ-ty-krE" secondAttribute="bottom" constant="20" id="P1L-9t-9dF"/>
+                            <constraint firstItem="egy-dL-Oue" firstAttribute="centerX" secondItem="upO-54-YEC" secondAttribute="centerX" id="XeN-DF-cbV"/>
+                            <constraint firstItem="s5B-Gz-shy" firstAttribute="centerX" secondItem="upO-54-YEC" secondAttribute="centerX" id="Ysf-uK-0UW"/>
+                            <constraint firstItem="SJS-px-PhR" firstAttribute="leading" secondItem="upO-54-YEC" secondAttribute="leading" constant="16" id="fcl-ER-dWW"/>
+                            <constraint firstItem="7X0-u5-eyz" firstAttribute="top" secondItem="egy-dL-Oue" secondAttribute="bottom" constant="20" id="jwB-W5-dYi"/>
+                            <constraint firstItem="l9c-45-lLh" firstAttribute="centerX" secondItem="upO-54-YEC" secondAttribute="centerX" id="uK1-ir-GcH"/>
+                            <constraint firstItem="7X0-u5-eyz" firstAttribute="centerX" secondItem="upO-54-YEC" secondAttribute="centerX" id="wVS-YA-BhA"/>
+                            <constraint firstItem="s5B-Gz-shy" firstAttribute="top" secondItem="l9c-45-lLh" secondAttribute="bottom" constant="20" id="zyx-rj-MUx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="addressLabel" destination="s5B-Gz-shy" id="uub-IC-poZ"/>
+                        <outlet property="fullNameLabel" destination="l9c-45-lLh" id="TJu-8h-2Wf"/>
+                        <outlet property="litterNotificationSwitch" destination="Bht-CN-YLq" id="onz-Gk-ea8"/>
+                        <outlet property="profileImageView" destination="7X0-u5-eyz" id="ws3-eG-g6f"/>
+                        <outlet property="reportAnonymousSwitch" destination="JUq-oZ-Vts" id="J2o-Ow-ovi"/>
+                        <outlet property="screenNameLabel" destination="egy-dL-Oue" id="dS8-Ai-3tK"/>
+                        <outlet property="statusChangeNotificationSwitch" destination="hdP-UW-PMb" id="Vno-fr-RnW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tMH-OL-Tge" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="912.79999999999995" y="37.331334332833585"/>
+        </scene>
     </scenes>
     <resources>
         <image name="f" width="352" height="328"/>
+        <image name="ic_mode_edit_white" width="24" height="24"/>
+        <image name="profile-image" width="600" height="600"/>
     </resources>
 </document>
