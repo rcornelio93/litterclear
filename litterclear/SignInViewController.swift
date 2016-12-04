@@ -114,5 +114,15 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
             }
         })
     }
+    
+    @IBAction func landingViewAction(_ sender: Any) {
+        print("inside landing view action")
+        let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "reportView") as! ReportViewController
+        present(reportVC, animated: true, completion: nil)
+    }
+    @IBAction func viewReports(_ sender: UIButton) {
+        let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "filedReports") as! ReportTableViewController
+        present(reportVC, animated: true, completion: nil)
+    }
 }
 
