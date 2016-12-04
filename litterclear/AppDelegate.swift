@@ -15,7 +15,8 @@ import GoogleSignIn
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
 
     var window: UIWindow?
-
+    var userUID: String?
+    var userEmail: String?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -45,6 +46,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 print("LitterApp - Unable to authenticate to firebase")
             } else {
                 print("LitterApp - Successfully authenticated to firebase \(user!.uid)")
+                self.userUID = user!.uid
+                self.userEmail = user!.email
+                
             }
         })
     }
