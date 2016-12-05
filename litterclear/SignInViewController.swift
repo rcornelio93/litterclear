@@ -23,11 +23,11 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let googleButton = GIDSignInButton()
+       /* let googleButton = GIDSignInButton()
         googleButton.frame = CGRect(x: (view.frame.width/2 - 75), y: 400 , width: 150, height: 150)
         //googleButton.center = view.center
         view.addSubview(googleButton)
-        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self*/
         
     }
 
@@ -61,6 +61,7 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
                 print("LitterApp - Successfully authenticated to firebase")
                 self.userUID = user?.uid
                 self.userEmail = user!.email
+                self.showHomeScreen()
             }
         })
     }
@@ -70,6 +71,7 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error == nil {
                     print("LitterApp - Successfully authenticated with Firebase")
+                    self.showHomeScreen()
                 } else {
                     FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
                         if error != nil{
@@ -78,12 +80,19 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
                             print("LitterApp - Successfully authenticated with Firebase")
                             self.userUID = user?.uid
                             self.userEmail = user!.email
+                            self.showHomeScreen()
                         }
                     })
                 }
             })
         }
     }
+    
+    func showHomeScreen(){
+        let homeVC = self.storyboard?.instantiateViewController(withIdentifier: "homeView") as! HomeViewController
+        self.present(homeVC, animated: true, completion: nil)
+    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -120,9 +129,14 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
         let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "reportView") as! ReportViewController
         present(reportVC, animated: true, completion: nil)
     }
+    
     @IBAction func viewReports(_ sender: UIButton) {
         let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "filedReports") as! ReportTableViewController
         present(reportVC, animated: true, completion: nil)
+    }
+    
+    @IBAction func googleSignInAction(_ sender: Any) {
+        GIDSignIn.sharedInstance().signIn()
     }
 }
 

@@ -202,4 +202,9 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
         print("Cancelled picker")
         dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func myReportsAction(_ sender: Any) {
+        let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "filedReports") as! ReportTableViewController
+        present(reportVC, animated: true, completion: nil)        
+    }
 }

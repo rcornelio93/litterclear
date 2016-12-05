@@ -10,27 +10,25 @@ import UIKit
 import Firebase
 import CoreLocation
 
-class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate,CLLocationManagerDelegate {
+class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate,CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var photoImageView: UIImageView!
-    
+    @IBOutlet weak var sizeTextField: UITextField!
+    @IBOutlet weak var severityTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
-    @IBOutlet weak var smallSizeButton: UIButton!
-    @IBOutlet weak var mediumSizeButton: UIButton!
-    @IBOutlet weak var largeSizeButton: UIButton!
-    @IBOutlet weak var extraLargeSizeButton: UIButton!
-    @IBOutlet weak var minorSecurityButton: UIButton!
-    @IBOutlet weak var mediumSecurityButton: UIButton!
-    @IBOutlet weak var urgentSecurityButton: UIButton!
     @IBOutlet weak var addressTextView: UITextView!
     
     let locationManager = CLLocationManager()
     
     var size: String = "Small"
-    var security: String = "Minor"
+    var severity: String = "Minor"
     var latitude: Double = 0
     var longitude: Double = 0
-    var address: String = ""
+    var address: String = "Fetching address..."
+    var sizeArray = ["Small (< 12 inches)", "Median (between 1-3 feet)", "Large (between 3-6 feet)", "Extra-Large (6 or more feet)"]
+    var sizePicker = UIPickerView()
+    var severityArray = ["Minor", "Medium (please remove soon)", "Urgent (please remove asap)"]
+    var severityPicker = UIPickerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +46,15 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
 //            }
 //        })
         descriptionTextField.delegate = self
-        
+        sizePicker.delegate = self
+        sizePicker.dataSource = self
+        sizePicker.tag = 1
+        sizeTextField.inputView = sizePicker
+        severityPicker.delegate = self
+        severityPicker.dataSource = self
+        severityPicker.tag = 2
+        severityTextField.inputView = severityPicker
+       
             // Ask for Authorisation from the User.
         //self.locationManager.requestAlwaysAuthorization()
         
@@ -84,6 +90,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         
         present(imagePickerController, animated: true, completion: nil)
     }
+    
     @IBAction func doReport(_ sender: UIButton) {
         if let img = photoImageView.image {
             if let imgData = UIImageJPEGRepresentation(img, 0.2) {
@@ -175,6 +182,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         // Dismiss the picker if the user canceled.
         dismiss(animated: true, completion: nil)
     }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         // The info dictionary contains multiple representations of the image, and this uses the original.
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
@@ -188,69 +196,58 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     }
 
     func sendReportToFirebase(imgURL: String) {
+
+        let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: DateFormatter.Style.long, timeStyle: DateFormatter.Style.short)
+        
         let report = [
             "imageURL": imgURL,
             "description": descriptionTextField.text!,
             "size": size,
-            "security": security,
-            "time": String(describing: NSDate()),
+            "severity": severity,
+            "time": timestamp,
             "latitude": String(latitude),
             "longitude": String(longitude), 
             "address" : self.address,
-            "status": "removal_claimed"
+            "status": "still_there"
         ]
         DataService.ds.REF_REPORTS.childByAutoId().setValue(report)
     }
     
-    @IBAction func reportSmallSize(_ sender: UIButton) {
-        size = "Small"
-        smallSizeButton.setTitleColor(UIColor.brown, for: .normal)
-        mediumSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        largeSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        extraLargeSizeButton.setTitleColor(UIColor.blue, for: .normal)
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView.tag == 1 {
+            return sizeArray[row]
+        } else {
+            return severityArray[row]
+        }
     }
-    @IBAction func reportMediumSize(_ sender: UIButton) {
-        size = "Medium"
-        smallSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        mediumSizeButton.setTitleColor(UIColor.brown, for: .normal)
-        largeSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        extraLargeSizeButton.setTitleColor(UIColor.blue, for: .normal)
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView.tag == 1 {
+            return sizeArray.count
+        } else {
+            return severityArray.count
+        }
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-    }
-    @IBAction func reportLargeSize(_ sender: UIButton) {
-        size = "Large"
-        smallSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        mediumSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        largeSizeButton.setTitleColor(UIColor.brown, for: .normal)
-        extraLargeSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        
-    }
-    @IBAction func reportExtraLargeSize(_ sender: UIButton) {
-        size = "Extra Large"
-        smallSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        mediumSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        largeSizeButton.setTitleColor(UIColor.blue, for: .normal)
-        extraLargeSizeButton.setTitleColor(UIColor.brown, for: .normal)
-    }
-    @IBAction func reportMinorSecurity(_ sender: UIButton) {
-        security = "Minor"
-        minorSecurityButton.setTitleColor(UIColor.brown, for: .normal)
-        mediumSecurityButton.setTitleColor(UIColor.blue, for: .normal)
-        urgentSecurityButton.setTitleColor(UIColor.blue, for: .normal)
-        
-    }
-    @IBAction func reportMediumSecurity(_ sender: UIButton) {
-        security = "Medium"
-        minorSecurityButton.setTitleColor(UIColor.blue, for: .normal)
-        mediumSecurityButton.setTitleColor(UIColor.brown, for: .normal)
-        urgentSecurityButton.setTitleColor(UIColor.blue, for: .normal)
-        
-    }
-    @IBAction func reportUrgentSecurity(_ sender: UIButton) {
-        security = "Urgent"
-        minorSecurityButton.setTitleColor(UIColor.blue, for: .normal)
-        mediumSecurityButton.setTitleColor(UIColor.blue, for: .normal)
-        urgentSecurityButton.setTitleColor(UIColor.brown, for: .normal)
+        if pickerView.tag == 1 {
+            sizeTextField.text = sizeArray[row]
+            if sizeTextField.text != nil {
+                size = sizeTextField.text!
+            }
+            sizeTextField.resignFirstResponder()
+        } else {
+            severityTextField.text = severityArray[row]
+            if severityTextField.text != nil {
+                severity = severityTextField.text!
+            }
+            severityTextField.resignFirstResponder()
+        }
         
     }
 
