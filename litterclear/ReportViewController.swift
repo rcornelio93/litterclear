@@ -83,7 +83,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         let imagePickerController = UIImagePickerController()
         
         // Only allow photos to be taken.
-        imagePickerController.sourceType = .camera
+        imagePickerController.sourceType = .photoLibrary
         
         // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self

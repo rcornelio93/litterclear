@@ -115,14 +115,25 @@ class ReportTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "ShowReportDetail" {
+            let reportDetailViewController = segue.destination as! ReportDetailViewController
+            
+            // Get the cell that generated this segue.
+            if let selectedCell = sender as? ReportTableViewCell {
+                let indexPath = tableView.indexPath(for: selectedCell)!
+                let selectedReport = reports[indexPath.row]
+                reportDetailViewController.report = selectedReport
+                reportDetailViewController.image = selectedCell.reportImageView.image
+            }
+        }
     }
-    */
+    
 
 }

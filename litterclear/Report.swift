@@ -14,7 +14,7 @@ public class Report {
     var imageURL: String!
     var latitude: String!
     var longitude: String!
-    var security: String!
+    var severity: String!
     var size: String!
     var time: String!
     var status: String!
@@ -43,8 +43,8 @@ public class Report {
             self.longitude = longitude
         }
         
-        if let security = reportData["security"] as? String {
-            self.security = security
+        if let severity = reportData["severity"] as? String {
+            self.severity = severity
         }
         
         if let size = reportData["size"] as? String {
