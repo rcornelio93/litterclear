@@ -149,5 +149,8 @@ class ReportTableViewController: UITableViewController {
             }
         }
     }
+    @IBAction func backToProfile(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
 
 }

@@ -538,7 +538,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="96"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QBn-4p-TVW" id="McZ-bl-OQQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="95.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="95"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CPA-2H-n2M">
@@ -575,7 +575,13 @@
                             <outlet property="delegate" destination="pHW-Xw-wU7" id="KgS-5F-Ur8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Filed Reports" id="2EQ-L7-QWV"/>
+                    <navigationItem key="navigationItem" title="Filed Reports" id="2EQ-L7-QWV">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="n5A-QQ-8ob" userLabel="Back">
+                            <connections>
+                                <action selector="backToProfile:" destination="pHW-Xw-wU7" id="dhj-E8-bib"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="piZ-rL-hil" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -739,7 +745,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AIP-p5-03R" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yHj-jd-PRG">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="yHj-jd-PRG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
