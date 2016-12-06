@@ -204,7 +204,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
     }
     
     @IBAction func myReportsAction(_ sender: Any) {
-        let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "filedReports") as! ReportTableViewController
-        present(reportVC, animated: true, completion: nil)        
+//        let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "filedReports") as! ReportTableViewController
+//        present(reportVC, animated: true, completion: nil)
+        performSegue(withIdentifier: "showReportList", sender: nil)
     }
 }

@@ -135,5 +135,19 @@ class ReportTableViewController: UITableViewController {
         }
     }
     
+    @IBAction func unwindToReportList(sender: UIStoryboardSegue) {
+        print("in unwind method")
+        if let sourceViewController = sender.source as? ReportDetailViewController, let report = sourceViewController.report {
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                
+                reports[selectedIndexPath.row] = report
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                
+                //update report status to firebase
+                DataService.ds.REF_REPORTS.child(report.reportKey).updateChildValues(["status": report.status])
+                
+            }
+        }
+    }
 
 }

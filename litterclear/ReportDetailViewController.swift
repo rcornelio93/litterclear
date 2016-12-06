@@ -67,9 +67,12 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
         if statusTextField.text != nil {
             report!.status = statusTextField.text!
         }
-        statusTextField.resignFirstResponder()        
+        statusTextField.resignFirstResponder()
     }
     
+    @IBAction func goBackToReportList(_ sender: UIBarButtonItem) {
+        navigationController!.popViewController(animated: true)
+    }
 
     /*
     // MARK: - Navigation
