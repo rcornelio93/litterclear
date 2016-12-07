@@ -82,6 +82,20 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
                             print("LitterApp - Successfully authenticated with Firebase")
                             self.userUID = user?.uid
                             self.userEmail = user!.email
+                            
+                            //To update role and other fields in database
+                            let role: String?
+                            
+                            if self.userEmail!.contains("@gmail.com"){
+                                role = "official"
+                            }else{
+                                role = "resident"
+                            }
+                            
+                            let values = ["userid": self.userUID!, "email": self.userEmail!, "role": role!, "reportAnonymously": "false"]
+                            self.registerUserIntoDatabase(uid: self.userUID!, values: values as [String : AnyObject])
+                            
+                            
                             self.showHomeScreen()
                         }
                     })
@@ -127,6 +141,7 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
     private func registerUserIntoDatabase(uid: String, values: [String: AnyObject]){
         let ref = FIRDatabase.database().reference(fromURL: "https://litterclear.firebaseio.com/")
         let usersRef = ref.child("user_profile").child(uid)
+        
         
         usersRef.updateChildValues(values, withCompletionBlock: {(err, ref) in
             if let error = err  {
