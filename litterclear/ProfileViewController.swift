@@ -288,4 +288,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
         }
     }
 
+    @IBAction func backToLandingView(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
 }

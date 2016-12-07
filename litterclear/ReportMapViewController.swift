@@ -286,6 +286,10 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
     
     
+    @IBAction func backToProfile(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     
     
     /*func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
