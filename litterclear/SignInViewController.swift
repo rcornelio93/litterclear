@@ -71,6 +71,8 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error == nil {
                     print("LitterApp - Successfully authenticated with Firebase")
+                    self.userUID = user?.uid
+                    self.userEmail = user!.email
                     self.showHomeScreen()
                 } else {
                     FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
@@ -90,6 +92,8 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
     
     func showHomeScreen(){
         let homeVC = self.storyboard?.instantiateViewController(withIdentifier: "homeView") as! HomeViewController
+        print("The user id in signin view controller is \(userUID) ")
+        homeVC.userUID = self.userUID
         self.present(homeVC, animated: true, completion: nil)
     }
     
@@ -106,7 +110,7 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
         let values = ["userid": self.userUID!, "email": self.userEmail!]
         registerUserIntoDatabase(uid: self.userUID!, values: values as [String : AnyObject])
         //print(GIDSignIn.sharedInstance().currentUser.userID)
-        
+
         let profViewController : ProfileViewController = segue.destination as! ProfileViewController
         profViewController.userUID = self.userUID
         

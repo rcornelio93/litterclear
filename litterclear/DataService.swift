@@ -14,7 +14,7 @@ let STORAGE_BASE = FIRStorage.storage().reference()
 
 class DataService {
     static let ds = DataService()
-    var REF_USER = DB_BASE.child("users")
+    var REF_USER = DB_BASE.child("user_profile")
     var REF_IMAGE = STORAGE_BASE.child("images")
     var REF_REPORTS = DB_BASE.child("reports")
     

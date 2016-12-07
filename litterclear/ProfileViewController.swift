@@ -15,6 +15,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
     
     var userUID: String?
     var imageURL: URL?
+    var userObject: User?
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var screenNameLabel: UILabel!
@@ -30,28 +31,70 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
         profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
         profileImageView.isUserInteractionEnabled = true
         
-        imageURL = URL(string: "https://firebasestorage.googleapis.com/v0/b/litterclear.appspot.com/o/profile_images%2F98591031-2C37-4DEF-9A15-4AE9D709FC6B?alt=media&token=87918a63-3190-4cfb-afd6-6d19f23a1578")
         
-        //URLSession.shared.
-        URLSession.shared.dataTask(with: imageURL!, completionHandler: { (data, response, error) in
-            if error != nil {
-                print (error!)
-                return
-            }
-
-            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
-                //let image = imageURL
-                // Bounce back to the main thread to update the UI
-
-                DispatchQueue.main.async {
-                    self.profileImageView.image = UIImage(data: data!)
-                }
-            }
-
+        print("the user id is \(userUID!)")
+        
+        DataService.ds.REF_USER.child(userUID!).observe(.value, with: { (snapshot) in
             
-        }).resume()
-        
+            
+                    if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                        print("coming inside found object")
+                        let key = snapshot.key
+                        self.userObject  =  User(userId: key, userData: userDict)
+                        print("the user object address is \(self.userObject?.address)")
+                        if let address = self.userObject?.address {
+                            self.addressLabel.text = address
+                        }
+                        if let screenName = self.userObject?.screenName {
+                            self.screenNameLabel.text = screenName
+                        }
+                        if let fullName = self.userObject?.fullName {
+                            self.fullNameLabel.text = fullName
+                        }
+                        if let profileImageURL = self.userObject?.profileImageURL {
+                            //self.fullNameLabel.text = fullName
+                            //imageURL = URL(string: "https://firebasestorage.googleapis.com/v0/b/litterclear.appspot.com/o/profile_images%2F98591031-2C37-4DEF-9A15-4AE9D709FC6B?alt=media&token=87918a63-3190-4cfb-afd6-6d19f23a1578")
+                            
+                            self.imageURL = URL(string: profileImageURL)
+                            //URLSession.shared.
+                            URLSession.shared.dataTask(with: self.imageURL!, completionHandler: { (data, response, error) in
+                                if error != nil {
+                                    print (error!)
+                                    return
+                                }
+                                
+                                DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                                    //let image = imageURL
+                                    // Bounce back to the main thread to update the UI
+                                    
+                                    DispatchQueue.main.async {
+                                        self.profileImageView.image = UIImage(data: data!)
+                                    }
+                                }
+                                
+                                
+                            }).resume()
 
+                        }
+                        if let notifyOnLitter = self.userObject?.notifyOnLitter {
+                            self.litterNotificationSwitch.isOn = notifyOnLitter
+                        }
+                        if let notifyOnStatusChange = self.userObject?.notifyOnStatusChange {
+                            self.statusChangeNotificationSwitch.isOn = notifyOnStatusChange
+                        }
+                        if let reportAnonymously = self.userObject?.reportAnonymously {
+                            self.reportAnonymousSwitch.isOn = reportAnonymously
+                        }
+
+                    } else {
+                        print("handling a new user scenario ?? ")
+                        
+                    }
+            
+        })
+
+        //print("the user object address is \(userObject?.address)")
+        //print("the user object full name is \(userObject?.fullName)")
     }
 
     func handleSelectProfileImageView() {
@@ -91,7 +134,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
                 }else {
                     print(metadata?.downloadURL()?.absoluteString)
                     let values = ["profileImageURL" : metadata?.downloadURL()?.absoluteString]
-                    self.updateUserProfile(uid: self.userUID!, values: values as [String : AnyObject])
+                    self.updateUserProfile(uid: self.userUID!, values: values as! [String : String])
+                    self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
                 }
             })
         }
@@ -100,13 +144,25 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
 
     }
     
-    private func updateUserProfile(uid: String, values: [String: AnyObject]){
+    private func updateUserProfile(uid: String, values: [String: String]){
         let ref = FIRDatabase.database().reference(fromURL: "https://litterclear.firebaseio.com/")
         let usersRef = ref.child("user_profile").child(uid)
-        
-        usersRef.updateChildValues(values, withCompletionBlock: {(err, ref) in
+        print("The value is \(values)")
+        usersRef.updateChildValues(values , withCompletionBlock: {(err, ref) in
             if let error = err  {
-                print (error)
+                print ("There was an error while updating the database \(error)")
+                return
+            }
+        })
+    }
+
+    private func updateUserProfile(uid: String, values: [String: NSNumber]){
+        let ref = FIRDatabase.database().reference(fromURL: "https://litterclear.firebaseio.com/")
+        let usersRef = ref.child("user_profile").child(uid)
+        print("The value is \(values)")
+        usersRef.updateChildValues(values , withCompletionBlock: {(err, ref) in
+            if let error = err  {
+                print ("There was an error while updating the database \(error)")
                 return
             }
         })
@@ -123,7 +179,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
             let textField = screenNameAlert.textFields![0] as UITextField
             self.screenNameLabel.text = textField.text!
             let values = ["screenName" : self.screenNameLabel.text]
-            self.updateUserProfile(uid: self.userUID!, values: values as [String : AnyObject])
+            self.updateUserProfile(uid: self.userUID!, values: values as! [String : String])
+            self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
 
         }))
         
@@ -145,7 +202,8 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
             let textField = fullNameAlert.textFields![0] as UITextField
             self.fullNameLabel.text = textField.text!
             let values = ["fullName" : self.fullNameLabel.text]
-            self.updateUserProfile(uid: self.userUID!, values: values as [String : AnyObject])
+            self.updateUserProfile(uid: self.userUID!, values: values as! [String : String])
+            self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
         }))
         
         fullNameAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
@@ -158,12 +216,14 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
     
     @IBAction func toggleNotificationOnLitter(_ sender: Any) {
         let values = ["notifyOnLitter" : litterNotificationSwitch.isOn]
-        self.updateUserProfile(uid: self.userUID!, values: values as [String : AnyObject])
+        self.updateUserProfile(uid: self.userUID!, values: values as [String : NSNumber])
+        userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
     }
     
     @IBAction func toggleNotificationOnStatusChange(_ sender: Any) {
         let values = ["notifyOnStatusChange" : statusChangeNotificationSwitch.isOn]
-        self.updateUserProfile(uid: self.userUID!, values: values as [String : AnyObject])
+        self.updateUserProfile(uid: self.userUID!, values: values as [String : NSNumber])
+        userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
     }
     
     @IBAction func toggleReportAnonymously(_ sender: Any) {
@@ -174,7 +234,9 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
             values = ["notifyOnLitter" : false, "notifyOnStatusChange": false, "reportAnonymously": reportAnonymousSwitch.isOn]
         }
         
-        self.updateUserProfile(uid: self.userUID!, values: values as [String : AnyObject])
+        self.updateUserProfile(uid: self.userUID!, values: values as [String : NSNumber])
+        userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
+        print("printing user report anonymous \(userObject?.reportAnonymously)")
     }
     
     @IBAction func addressEditAlert(_ sender: Any) {
@@ -187,8 +249,10 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
         addressAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let textField = addressAlert.textFields![0] as UITextField
             self.addressLabel.text = textField.text!
-            let values = ["address" : self.addressLabel.text]
-            self.updateUserProfile(uid: self.userUID!, values: values as [String : AnyObject])
+            let values = ["address" : self.addressLabel.text!]
+            print("The new value of text is \(self.addressLabel.text!)")
+            self.updateUserProfile(uid: self.userUID!, values: values )
+            self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
         }))
         
         addressAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
