@@ -213,8 +213,21 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
             "address" : self.address,
             "status": "Still there"
         ]
-        DataService.ds.REF_REPORTS.childByAutoId().setValue(report)
-        dismiss(animated: true, completion: nil)
+        DataService.ds.REF_REPORTS.childByAutoId().setValue(report) { (error, ref) in
+            if error != nil{
+                print("error is \(error)")
+            }else{
+                print("Save successful")
+                let screenNameAlert  = UIAlertController(title: "Report Filed", message: "Your litter report has been successfully filed", preferredStyle: UIAlertControllerStyle.alert)
+                screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    self.dismiss(animated: true, completion: nil)
+                }))
+                self.present(screenNameAlert, animated: true, completion: nil)
+            }
+        }
+        
+        
+        //dismiss(animated: true, completion: nil)
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
