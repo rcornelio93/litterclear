@@ -272,4 +272,16 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
 //        present(reportVC, animated: true, completion: nil)
         performSegue(withIdentifier: "showReportList", sender: nil)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "showReportList" {
+            let uiTabBarController = segue.destination as! UITabBarController
+            let navVC = uiTabBarController.viewControllers?.first as! UINavigationController
+            let reportTableViewController = navVC.viewControllers.first as! ReportTableViewController
+            reportTableViewController.userObj = userObject
+        }
+    }
+
 }

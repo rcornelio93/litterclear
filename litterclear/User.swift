@@ -8,11 +8,6 @@
 
 import Foundation
 
-enum Role {
-    case official
-    case resident
-}
-
 class User {
     
     var id: String!
@@ -24,7 +19,7 @@ class User {
     var reportAnonymously: Bool!
     var profileImageURL: String!
     var screenName: String!
-    var role: Role!
+    var role: String!
     
     init(userId: String, userData: Dictionary<String, AnyObject>) {
 
@@ -40,16 +35,23 @@ class User {
         }
         if let notifyOnLitter = userData["notifyOnLitter"] as? Bool {
             self.notifyOnLitter = notifyOnLitter
+        }else{
+            self.notifyOnLitter = true
         }
         if let notifyOnStatusChange = userData["notifyOnStatusChange"] as? Bool {
             self.notifyOnStatusChange = notifyOnStatusChange
+        }else{
+            self.notifyOnStatusChange = true
         }
         if let profileImageURL = userData["profileImageURL"] as? String {
             self.profileImageURL = profileImageURL
         }
         if let reportAnonymously = userData["reportAnonymously"] as? Bool {
             self.reportAnonymously = reportAnonymously
+        }else{
+            self.reportAnonymously = false
         }
+
         if let screenName = userData["screenName"] as? String {
             self.screenName = screenName
         }

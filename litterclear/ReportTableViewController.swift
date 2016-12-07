@@ -13,6 +13,7 @@ class ReportTableViewController: UITableViewController {
     
     var reports = [Report]()
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
+    var userObj: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()

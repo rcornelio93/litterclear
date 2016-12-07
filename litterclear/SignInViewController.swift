@@ -107,7 +107,15 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
             self.userEmail = delegate.userEmail
         }
         
-        let values = ["userid": self.userUID!, "email": self.userEmail!]
+        let role: String?
+        
+        if userEmail!.contains("@gmail.com"){
+            role = "official"
+        }else{
+            role = "resident"
+        }
+        
+        let values = ["userid": self.userUID!, "email": self.userEmail!, "role": role!]
         registerUserIntoDatabase(uid: self.userUID!, values: values as [String : AnyObject])
         //print(GIDSignIn.sharedInstance().currentUser.userID)
 
