@@ -16,7 +16,8 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     @IBOutlet weak var sizeTextField: UITextField!
     @IBOutlet weak var severityTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
-    @IBOutlet weak var addressTextView: UITextView!
+    
+    @IBOutlet weak var addressLabel: UILabel!
     
     let locationManager = CLLocationManager()
     
@@ -24,7 +25,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     var severity: String = "Minor"
     var latitude: Double = 0
     var longitude: Double = 0
-    var address: String = "Fetching address..."
+    var address: String = "Fetching address...."
     var sizeArray = ["Small (< 12 inches)", "Median (between 1-3 feet)", "Large (between 3-6 feet)", "Extra-Large (6 or more feet)"]
     var sizePicker = UIPickerView()
     var severityArray = ["Minor", "Medium (please remove soon)", "Urgent (please remove asap)"]
@@ -68,6 +69,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         
         if let image = image {
             photoImageView.image = image
+            //self.addressLabel.text = self.address
         }
         
     }
@@ -145,6 +147,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
                     }
                     
                     print("ADdRESS: \(self.address)")
+                    self.addressLabel.text = self.address
                 }
                 
             })
@@ -188,7 +191,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         // Set photoImageView to display the selected image.
         photoImageView.image = selectedImage
         // Set address TextViee
-        addressTextView.text = self.address
+        addressLabel.text = self.address
         
         // Dismiss the picker.
         dismiss(animated: true, completion: nil)
