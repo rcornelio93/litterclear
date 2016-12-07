@@ -56,5 +56,9 @@ class User {
             self.screenName = screenName
         }
         
+        if let role = userData["role"] as? String {
+            self.role = role
+        }
+        
     }
 }

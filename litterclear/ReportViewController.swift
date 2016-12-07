@@ -206,7 +206,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
 
         let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: DateFormatter.Style.long, timeStyle: DateFormatter.Style.short)
         
-        var email = "anonymous user"
+        var email = "Anonymous"
 
         if let userObj = userObj {
             if userObj.reportAnonymously == false {

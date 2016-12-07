@@ -24,23 +24,58 @@ class ReportTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
-        DataService.ds.REF_REPORTS.observe(.value, with: { (snapshot) in
+        if let userObj = userObj {
+            print("id: \(userObj.id) email: \(userObj.email) role: \(userObj.role) reportAnonymously: \(userObj.reportAnonymously)")
             
-            self.reports = [] // THIS IS THE NEW LINE
-            
-            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
-                for snap in snapshot {
-                    print("SNAP: \(snap)")
-                    if let reportDict = snap.value as? Dictionary<String, AnyObject> {
-                        let key = snap.key
-                        let report = Report(reportKey: key, reportData: reportDict)
-                        self.reports.append(report)
+            if userObj.role == "resident" {
+                navigationItem.title = "My Reports"
+                
+                DataService.ds.REF_REPORTS.child(userObj.id).observe(.value, with: { (snapshot) in
+                    
+                    self.reports = [] // THIS IS THE NEW LINE
+                    
+                    if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                        for snap in snapshot {
+                            print("SNAP: \(snap)")
+                            if let reportDict = snap.value as? Dictionary<String, AnyObject> {
+                                let key = snap.key
+                                let report = Report(reportKey: key, reportData: reportDict)
+                                self.reports.append(report)
+                            }
+                        }
                     }
-                }
+                    
+                    self.tableView.reloadData()
+                })
+            } else { //officer
+                navigationItem.title = "Resident Reports"
+                
+                DataService.ds.REF_REPORTS.observe(.value, with: { (snapshot) in
+                    
+                    self.reports = [] // THIS IS THE NEW LINE
+                    
+                    if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                        for snap in snapshot {
+                            print("SNAP: \(snap)")
+                            if let subsnap = snap.children.allObjects as? [FIRDataSnapshot] {
+                                for sub in subsnap {
+                                    if let reportDict = sub.value as? Dictionary<String, AnyObject> {
+                                        let key = snap.key
+                                        let report = Report(reportKey: key, reportData: reportDict)
+                                        self.reports.append(report)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    self.tableView.reloadData()
+                })
             }
-            
-            self.tableView.reloadData()
-        })
+        
+        } else {
+            print("ERROR: USER IS NIL")
+        }
 
     }
 
