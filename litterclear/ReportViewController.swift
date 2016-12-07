@@ -210,7 +210,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
             "latitude": String(latitude),
             "longitude": String(longitude), 
             "address" : self.address,
-            "status": "still_there"
+            "status": "Still there"
         ]
         DataService.ds.REF_REPORTS.childByAutoId().setValue(report)
         dismiss(animated: true, completion: nil)
