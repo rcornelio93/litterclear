@@ -73,6 +73,10 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
             //self.addressLabel.text = self.address
         }
         
+        if let userObj = userObj {
+            print("id: \(userObj.id) email: \(userObj.email) role: \(userObj.role) reportAnonymously: \(userObj.reportAnonymously)")
+        }
+        
     }
 
 
@@ -202,28 +206,39 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
 
         let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: DateFormatter.Style.long, timeStyle: DateFormatter.Style.short)
         
-        let report = [
-            "imageURL": imgURL,
-            "description": descriptionTextField.text!,
-            "size": size,
-            "severity": severity,
-            "time": timestamp,
-            "latitude": String(latitude),
-            "longitude": String(longitude), 
-            "address" : self.address,
-            "status": "Still there"
-        ]
-        DataService.ds.REF_REPORTS.childByAutoId().setValue(report) { (error, ref) in
-            if error != nil{
-                print("error is \(error)")
-            }else{
-                print("Save successful")
-                let screenNameAlert  = UIAlertController(title: "Report Filed", message: "Your litter report has been successfully filed", preferredStyle: UIAlertControllerStyle.alert)
-                screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                    self.dismiss(animated: true, completion: nil)
-                }))
-                self.present(screenNameAlert, animated: true, completion: nil)
+        var email = "anonymous user"
+
+        if let userObj = userObj {
+            if userObj.reportAnonymously == false {
+                email = userObj.email
             }
+            
+            let report = [
+                "email": email,
+                "imageURL": imgURL,
+                "description": descriptionTextField.text!,
+                "size": size,
+                "severity": severity,
+                "time": timestamp,
+                "latitude": String(latitude),
+                "longitude": String(longitude),
+                "address" : self.address,
+                "status": "Still there"
+            ]
+            DataService.ds.REF_REPORTS.child(userObj.id).childByAutoId().setValue(report) { (error, ref) in
+                if error != nil{
+                    print("error is \(error)")
+                }else{
+                    print("Save successful")
+                    let screenNameAlert  = UIAlertController(title: "Report Filed", message: "Your litter report has been successfully filed", preferredStyle: UIAlertControllerStyle.alert)
+                    screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                        self.dismiss(animated: true, completion: nil)
+                    }))
+                    self.present(screenNameAlert, animated: true, completion: nil)
+                }
+            }
+        } else {
+            print("ERROR: USER IS NIL")
         }
         
         
