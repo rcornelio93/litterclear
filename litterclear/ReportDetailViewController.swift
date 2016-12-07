@@ -19,6 +19,7 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
 
     var report: Report?
     var image: UIImage?
+    var userObj: User?
     
     var statusArray = ["Still there", "Removal claimed", "Removal confirmed"]
     var statusPicker = UIPickerView()

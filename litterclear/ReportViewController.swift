@@ -34,6 +34,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     var imagePickerController = UIImagePickerController()
     
     var image: UIImage?
+    var userObj: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()

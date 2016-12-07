@@ -13,9 +13,20 @@ class HomeViewController : UIViewController,UIImagePickerControllerDelegate,UINa
     
     var userUID: String?
     var imageURL: URL?
+    var userObject: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+ 
+        DataService.ds.REF_USER.child(userUID!).observe(.value, with: { (snapshot) in
+            
+            
+            if let userDict = snapshot.value as? Dictionary<String, AnyObject> {
+                let key = snapshot.key
+                self.userObject  =  User(userId: key, userData: userDict)
+            }
+        })
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,6 +87,7 @@ class HomeViewController : UIViewController,UIImagePickerControllerDelegate,UINa
       //  performSegue(withIdentifier: "showNewReport", sender: self)
         
         let reportVC = self.storyboard?.instantiateViewController(withIdentifier: "reportView") as! ReportViewController
+        reportVC.userObj = userObject
         reportVC.image = selectedImage
         present(reportVC, animated: true, completion: nil)
 
