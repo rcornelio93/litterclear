@@ -167,6 +167,7 @@ class ReportTableViewController: UITableViewController {
                 let selectedReport = reports[indexPath.row]
                 reportDetailViewController.report = selectedReport
                 reportDetailViewController.image = selectedCell.reportImageView.image
+                reportDetailViewController.userObj = self.userObj
             }
         }
     }

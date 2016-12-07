@@ -281,6 +281,10 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
             let navVC = uiTabBarController.viewControllers?.first as! UINavigationController
             let reportTableViewController = navVC.viewControllers.first as! ReportTableViewController
             reportTableViewController.userObj = userObject
+            
+            let navVC2 = uiTabBarController.viewControllers?[1] as! UINavigationController
+            let reportMapViewController = navVC2.viewControllers.first as! ReportMapViewController
+            reportMapViewController.userObj = userObject
         }
     }
 

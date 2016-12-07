@@ -24,10 +24,14 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     var firstTime = false
     var initialLocation = CLLocation(latitude: 37.322993, longitude: -121.883200)
     
+    var userObj: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        if let userObj = userObj {
+            print("id: \(userObj.id) email: \(userObj.email) role: \(userObj.role) reportAnonymously: \(userObj.reportAnonymously)")
+        }
         
         mapView.delegate = self
        
@@ -97,29 +101,100 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
             self.reports = [] // THIS IS THE NEW LINE
             self.userAnnos = []
             
-            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
-                for snap in snapshot {
-                    //print("SNAP: \(snap)")
-                    if let reportDict = snap.value as? Dictionary<String, AnyObject> {
-                        let key = snap.key
-                        let report = Report(reportKey: key, reportData: reportDict)
-                        self.reports.append(report)
+            
+            if let userObj = self.userObj {
+                print("id: \(userObj.id) email: \(userObj.email) role: \(userObj.role) reportAnonymously: \(userObj.reportAnonymously)")
+                
+                if userObj.role == "resident" {
+                    self.navigationItem.title = "My Reports"
+                    
+                    DataService.ds.REF_REPORTS.child(userObj.id).observe(.value, with: { (snapshot) in
                         
-                        //Create user Annotaion and append to the array
-                        //init(title: String, address: String, size: String,coordinate: CLLocationCoordinate2D)
-                        print("Report info .. \(Double(report.latitude)) ... \(Double(report.longitude))")
-                        let userAnno = UserAnnotation(title: report.description!,address: report.address!, size: report.size!,coordinate:CLLocationCoordinate2D(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!))
-                        print("UserAnnotation is created here --> \(userAnno)")
+                        self.reports = [] // THIS IS THE NEW LINE
                         
-                        self.mapView.addAnnotation(userAnno)
-                        self.userAnnos.append(userAnno)
+                        if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                            for snap in snapshot {
+                                print("SNAP: \(snap)")
+                                if let reportDict = snap.value as? Dictionary<String, AnyObject> {
+                                    let key = snap.key
+                                    let report = Report(reportKey: key, reportData: reportDict)
+                                    self.reports.append(report)
+                                    
+                                    //Create user Annotaion and append to the array
+                                    //init(title: String, address: String, size: String,coordinate: CLLocationCoordinate2D)
+                                    print("Report info .. \(Double(report.latitude)) ... \(Double(report.longitude))")
+                                    let userAnno = UserAnnotation(title: report.description!,address: report.address!, size: report.size!,coordinate:CLLocationCoordinate2D(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!))
+                                    print("UserAnnotation is created here --> \(userAnno)")
+                                    
+                                    self.mapView.addAnnotation(userAnno)
+                                    self.userAnnos.append(userAnno)
+                                }
+                            }
+                        }
                         
-                       
+                    })
+                } else { //officer
+                    self.navigationItem.title = "Resident Reports"
+                    
+                    DataService.ds.REF_REPORTS.observe(.value, with: { (snapshot) in
                         
+                        self.reports = [] // THIS IS THE NEW LINE
                         
-                    }
+                        if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                            for snap in snapshot {
+                                print("SNAP: \(snap)")
+                                if let subsnap = snap.children.allObjects as? [FIRDataSnapshot] {
+                                    for sub in subsnap {
+                                        if let reportDict = sub.value as? Dictionary<String, AnyObject> {
+                                            let key = snap.key
+                                            let report = Report(reportKey: key, reportData: reportDict)
+                                            self.reports.append(report)
+                                            
+                                            //Create user Annotaion and append to the array
+                                            //init(title: String, address: String, size: String,coordinate: CLLocationCoordinate2D)
+                                            print("Report info .. \(Double(report.latitude)) ... \(Double(report.longitude))")
+                                            let userAnno = UserAnnotation(title: report.description!,address: report.address!, size: report.size!,coordinate:CLLocationCoordinate2D(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!))
+                                            print("UserAnnotation is created here --> \(userAnno)")
+                                            
+                                            self.mapView.addAnnotation(userAnno)
+                                            self.userAnnos.append(userAnno)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                    })
                 }
+                
+            } else {
+                print("ERROR: USER IS NIL")
             }
+            
+            
+//            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+//                for snap in snapshot {
+//                    //print("SNAP: \(snap)")
+//                    if let reportDict = snap.value as? Dictionary<String, AnyObject> {
+//                        let key = snap.key
+//                        let report = Report(reportKey: key, reportData: reportDict)
+//                        self.reports.append(report)
+//                        
+//                        //Create user Annotaion and append to the array
+//                        //init(title: String, address: String, size: String,coordinate: CLLocationCoordinate2D)
+//                        print("Report info .. \(Double(report.latitude)) ... \(Double(report.longitude))")
+//                        let userAnno = UserAnnotation(title: report.description!,address: report.address!, size: report.size!,coordinate:CLLocationCoordinate2D(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!))
+//                        print("UserAnnotation is created here --> \(userAnno)")
+//                        
+//                        self.mapView.addAnnotation(userAnno)
+//                        self.userAnnos.append(userAnno)
+//                        
+//                       
+//                        
+//                        
+//                    }
+//                }
+//            }
             
             //self.tableView.reloadData()
         })
@@ -184,6 +259,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
              let report = sender as? Report
         
                 reportDetailViewController.report = report
+                reportDetailViewController.userObj = userObj
                 /*let ref = FIRStorage.storage().reference(forURL: report!.imageURL!)
                 print("Image URL \(report!.imageURL!)")
                 ref.data(withMaxSize: 2 * 1024 * 1024, completion: { (data, error) in
