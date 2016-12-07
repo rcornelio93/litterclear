@@ -344,7 +344,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tMH-OL-Tge" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1352.8" y="45.42728635682159"/>
+            <point key="canvasLocation" x="1716" y="374"/>
         </scene>
         <!--Home View Controller-->
         <scene sceneID="HkY-bL-hAH">
@@ -378,7 +378,6 @@
                                 <state key="normal" image="ic_add_a_photo_white"/>
                                 <connections>
                                     <action selector="reportLitterAction:" destination="308-4Y-zbL" eventType="touchUpInside" id="QKo-wl-D3F"/>
-                                    <segue destination="Ptp-Vz-a0k" kind="show" identifier="reportLitterSegue" id="SrS-IT-UbQ"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seeing some Litter? Report it by clicking the photo below" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="seS-vc-yqu">
@@ -402,6 +401,9 @@
                             <constraint firstItem="seS-vc-yqu" firstAttribute="centerX" secondItem="2GU-jC-yeC" secondAttribute="centerX" id="rQA-4m-V7j"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="Ptp-Vz-a0k" kind="show" identifier="showNewReport" id="eCC-NH-g8P"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UJe-xf-ppy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -420,7 +422,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Lj-vE-H12">
-                                <rect key="frame" x="32" y="36" width="104" height="24"/>
+                                <rect key="frame" x="266" y="36" width="104" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Take picture" image="ic_photo_camera_white">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -430,7 +432,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default-report-image" translatesAutoresizingMaskIntoConstraints="NO" id="zgM-5a-Y7F">
-                                <rect key="frame" x="0.0" y="76" width="375" height="300"/>
+                                <rect key="frame" x="0.0" y="81" width="375" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="06v-CR-cfD"/>
                                 </constraints>
@@ -496,20 +498,34 @@
                                     <action selector="doReport:" destination="Ptp-Vz-a0k" eventType="touchUpInside" id="m2P-TA-9tv"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PBo-kI-1rD">
+                                <rect key="frame" x="8" y="36" width="48" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancel:" destination="Ptp-Vz-a0k" eventType="touchUpInside" id="9tz-kz-Ahr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="aCm-Jf-iRv" firstAttribute="leading" secondItem="MMD-uJ-npH" secondAttribute="leading" constant="16" id="26a-xu-mdI"/>
                             <constraint firstItem="aCm-Jf-iRv" firstAttribute="top" secondItem="zgM-5a-Y7F" secondAttribute="bottom" constant="16" id="7gb-kZ-o4L"/>
+                            <constraint firstItem="PBo-kI-1rD" firstAttribute="leading" secondItem="MMD-uJ-npH" secondAttribute="leading" constant="8" id="HcF-8y-q4j"/>
                             <constraint firstItem="JD1-4U-80w" firstAttribute="centerX" secondItem="MMD-uJ-npH" secondAttribute="centerX" id="I2V-HG-SdT"/>
+                            <constraint firstItem="1Lj-vE-H12" firstAttribute="leading" secondItem="PBo-kI-1rD" secondAttribute="trailing" constant="210" id="Llq-OR-a3r"/>
                             <constraint firstItem="1Lj-vE-H12" firstAttribute="top" secondItem="5lh-va-yVe" secondAttribute="bottom" constant="16" id="P0c-Ne-l10"/>
                             <constraint firstItem="aCm-Jf-iRv" firstAttribute="centerX" secondItem="MMD-uJ-npH" secondAttribute="centerX" id="QND-Yu-CMc"/>
                             <constraint firstItem="abk-sd-ddT" firstAttribute="top" secondItem="JD1-4U-80w" secondAttribute="bottom" constant="24" id="QT7-XT-fOi"/>
                             <constraint firstAttribute="trailing" secondItem="aCm-Jf-iRv" secondAttribute="trailing" constant="16" id="WQ9-uc-8Kq"/>
                             <constraint firstItem="zgM-5a-Y7F" firstAttribute="centerX" secondItem="MMD-uJ-npH" secondAttribute="centerX" id="ZOY-z3-JPx"/>
                             <constraint firstItem="zgM-5a-Y7F" firstAttribute="width" secondItem="MMD-uJ-npH" secondAttribute="width" id="h8E-CA-BwV"/>
-                            <constraint firstItem="1Lj-vE-H12" firstAttribute="leading" secondItem="MMD-uJ-npH" secondAttribute="leadingMargin" constant="16" id="nwv-Le-T7L"/>
+                            <constraint firstItem="PBo-kI-1rD" firstAttribute="top" secondItem="5lh-va-yVe" secondAttribute="bottom" constant="16" id="n5i-nB-ayb"/>
+                            <constraint firstItem="1Lj-vE-H12" firstAttribute="leading" secondItem="MMD-uJ-npH" secondAttribute="leadingMargin" constant="250" id="nwv-Le-T7L"/>
                             <constraint firstItem="zgM-5a-Y7F" firstAttribute="top" secondItem="1Lj-vE-H12" secondAttribute="bottom" constant="16" id="qlX-3t-Xp1"/>
+                            <constraint firstItem="zgM-5a-Y7F" firstAttribute="top" secondItem="PBo-kI-1rD" secondAttribute="bottom" constant="16" id="sW3-2G-dkC"/>
                             <constraint firstItem="aCm-Jf-iRv" firstAttribute="width" secondItem="MMD-uJ-npH" secondAttribute="width" multiplier="0.9" id="xmQ-dC-CWC"/>
                         </constraints>
                     </view>
@@ -523,7 +539,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NXU-Nb-fjh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2496.8000000000002" y="37.331334332833585"/>
+            <point key="canvasLocation" x="1700" y="-383"/>
         </scene>
         <!--Filed Reports-->
         <scene sceneID="nqY-OP-ZZK">
@@ -585,7 +601,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="piZ-rL-hil" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1716" y="787.55622188905556"/>
+            <point key="canvasLocation" x="1700" y="1102"/>
         </scene>
         <!--Report-->
         <scene sceneID="lYc-Nv-2h7">

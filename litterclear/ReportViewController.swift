@@ -30,21 +30,14 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     var severityArray = ["Minor", "Medium (please remove soon)", "Urgent (please remove asap)"]
     var severityPicker = UIPickerView()
     
+    var imagePickerController = UIImagePickerController()
+    
+    var image: UIImage?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-//        let userData = ["name": "Long", "dob": "07/08/1990"]
-//        DataService.ds.createUser(uid: "123", userData: userData)
-//        
-//        DataService.ds.REF_USER.observe(.value, with: { (snapshot) in
-//           // let user = snapshot.value as? [String : AnyObject] ?? [:]
-//            //print(user)
-//            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
-//                for snap in snapshot {
-//                    print("a: \(snap)")
-//                }
-//            }
-//        })
+
         descriptionTextField.delegate = self
         sizePicker.delegate = self
         sizePicker.dataSource = self
@@ -66,7 +59,19 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
 
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
+        
+        //Only allow photos to be taken.
+        imagePickerController.sourceType = .photoLibrary
+
+        // Make sure ViewController is notified when the user picks an image.
+        imagePickerController.delegate = self
+        
+        if let image = image {
+            photoImageView.image = image
+        }
+        
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -78,15 +83,6 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     @IBAction func reportLitter(_ sender: UIButton) {
         
         descriptionTextField.resignFirstResponder()
-        
-        // UIImagePickerController is a view controller that lets a user pick media from their photo library.
-        let imagePickerController = UIImagePickerController()
-        
-        // Only allow photos to be taken.
-        imagePickerController.sourceType = .photoLibrary
-        
-        // Make sure ViewController is notified when the user picks an image.
-        imagePickerController.delegate = self
         
         present(imagePickerController, animated: true, completion: nil)
     }
@@ -112,6 +108,9 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         }
     }
     
+    @IBAction func cancel(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
     //MARK: CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
