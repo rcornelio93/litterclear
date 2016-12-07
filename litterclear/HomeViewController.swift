@@ -34,6 +34,7 @@ class HomeViewController : UIViewController,UIImagePickerControllerDelegate,UINa
             }
             
             //print(GIDSignIn.sharedInstance().currentUser.userID)
+            print("The user id in home view controller is\(userUID)")
             
             let profViewController : ProfileViewController = segue.destination as! ProfileViewController
             profViewController.userUID = self.userUID
