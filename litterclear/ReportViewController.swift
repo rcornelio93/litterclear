@@ -210,6 +210,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
             "status": "still_there"
         ]
         DataService.ds.REF_REPORTS.childByAutoId().setValue(report)
+        dismiss(animated: true, completion: nil)
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
