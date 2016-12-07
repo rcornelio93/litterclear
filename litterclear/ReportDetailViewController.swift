@@ -40,6 +40,16 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
             statusTextField.text = report.status
         }
         
+        if let user = userObj {
+            // get the userObj verify if it set, set the statusArray for official
+            let userRole = user.role
+            
+            if userRole == "official"{
+                statusArray = ["Still there", "Removal confirmed"]
+            }
+            
+        }
+        
         
         statusPicker.delegate = self
         statusPicker.dataSource = self
