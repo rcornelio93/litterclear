@@ -91,7 +91,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     }
     
     func centerMapOnLocation(location: CLLocation) {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 10000, 10000)
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 100000, 100000)
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
@@ -114,7 +114,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                         
                         if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
                             for snap in snapshot {
-                                print("SNAP: \(snap)")
+                                //print("SNAP: \(snap)")
                                 if let reportDict = snap.value as? Dictionary<String, AnyObject> {
                                     let key = snap.key
                                     let report = Report(reportKey: key, reportData: reportDict)
@@ -124,7 +124,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                                     //init(title: String, address: String, size: String,coordinate: CLLocationCoordinate2D)
                                     print("Report info .. \(Double(report.latitude)) ... \(Double(report.longitude))")
                                     let userAnno = UserAnnotation(title: report.description!,address: report.address!, size: report.size!,coordinate:CLLocationCoordinate2D(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!))
-                                    print("UserAnnotation is created here --> \(userAnno)")
+                                    //print("UserAnnotation is created here --> \(userAnno)")
                                     
                                     self.mapView.addAnnotation(userAnno)
                                     self.userAnnos.append(userAnno)
@@ -142,7 +142,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                         
                         if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
                             for snap in snapshot {
-                                print("SNAP: \(snap)")
+                                //print("SNAP: \(snap)")
                                 if let subsnap = snap.children.allObjects as? [FIRDataSnapshot] {
                                     for sub in subsnap {
                                         if let reportDict = sub.value as? Dictionary<String, AnyObject> {
@@ -154,7 +154,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                                             //init(title: String, address: String, size: String,coordinate: CLLocationCoordinate2D)
                                             print("Report info .. \(Double(report.latitude)) ... \(Double(report.longitude))")
                                             let userAnno = UserAnnotation(title: report.description!,address: report.address!, size: report.size!,coordinate:CLLocationCoordinate2D(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!))
-                                            print("UserAnnotation is created here --> \(userAnno)")
+                                            //print("UserAnnotation is created here --> \(userAnno)")
                                             
                                             self.mapView.addAnnotation(userAnno)
                                             self.userAnnos.append(userAnno)
@@ -240,7 +240,8 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         let report:Report = reports[indexOfReport!]
         
         print("report at the same index ... \(report.latitude) ... \(report.longitude)")
-        
+        var changeLocation = CLLocation(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!)
+        centerMapOnLocation(location: changeLocation)
         
         performSegue(withIdentifier: "ShowMapToDetail", sender: report)
 
