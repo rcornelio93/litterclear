@@ -48,10 +48,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 print("LitterApp - Successfully authenticated to firebase after google \(user!.uid)")
                 self.userUID = user!.uid
                 self.userEmail = user!.email
+                let values = ["userid": self.userUID!, "email": self.userEmail!, "role": "official", "reportAnonymously": "false"]
+                self.registerUserIntoDatabase(uid: self.userUID!, values: values as [String : AnyObject])
                 let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
                 let homeVC = storyboard.instantiateViewController(withIdentifier: "homeView") as! HomeViewController
                 homeVC.userUID = user!.uid
                 self.window?.rootViewController?.present(homeVC, animated: true, completion: nil)
+            }
+        })
+    }
+
+    private func registerUserIntoDatabase(uid: String, values: [String: AnyObject]){
+        let ref = FIRDatabase.database().reference(fromURL: "https://litterclear.firebaseio.com/")
+        let usersRef = ref.child("user_profile").child(uid)
+        
+        
+        usersRef.updateChildValues(values, withCompletionBlock: {(err, ref) in
+            if let error = err  {
+                print (error)
+                return
             }
         })
     }

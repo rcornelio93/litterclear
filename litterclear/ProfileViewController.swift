@@ -88,6 +88,12 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
                         if let reportAnonymously = self.userObject?.reportAnonymously {
                             self.reportAnonymousSwitch.isOn = reportAnonymously
                         }
+                        if let role = self.userObject?.role {
+                            if role == "official" {
+                                self.myReportsButton.setImage(UIImage(named: "ic_folder_shared_white"), for: UIControlState.normal)
+                                self.myReportsButton.setTitle("All Residents Reports", for: UIControlState.normal)
+                            }
+                        }
 
                     } else {
                         print("handling a new user scenario ?? ")
