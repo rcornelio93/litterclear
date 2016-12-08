@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import CoreLocation
+import SendGrid
+
 
 class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate,CLLocationManagerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -201,6 +203,35 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         // Dismiss the picker.
         dismiss(animated: true, completion: nil)
     }
+    
+    func sendEmailToUser(report: Report, email:String){
+        
+        let session = Session()
+        session.authentication = Authentication.apiKey("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")
+        
+        Session.shared.authentication = Authentication.apiKey("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")
+        
+        //session.authentication = Authentication.apiKey("9wJWd9yzQXi_XlC5HYPrHg")
+        //Session.shared.authentication = Authentication.apiKey("9wJWd9yzQXi_XlC5HYPrHg")
+        
+        
+        let personalization = Personalization(recipients: "neha.parmar@sjsu.edu")
+        let plainText = Content(contentType: ContentType.plainText, value: "Hey Dere")
+        let htmlText = Content(contentType: ContentType.htmlText, value: "<h3>Report Submitted</h3><br/><br/><b> Report Information:</b><br/><br/> Description: \(report.description!)<br/> Severity: \(report.severity!)<br/> Size: \(report.size!)<br/> Time: \(report.time!)<br/> Email: \(email)<br/> Address: \(report.address!)<br/> Report Status: \(report.status!)<br/><br/><br/><b>Support Team, LitterClear.com<b>")
+        let email = Email(
+            personalizations: [personalization],
+            from: Address("support@litterclear.com"),
+            content: [plainText, htmlText],
+            subject: "Report Submitted"
+        )
+        do {
+            try Session.shared.send(request: email)
+        } catch {
+            
+            print(error)
+        }
+        
+    }
 
     func sendReportToFirebase(imgURL: String) {
 
@@ -211,6 +242,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         if let userObj = userObj {
             if userObj.reportAnonymously == false {
                 email = userObj.email
+           
             }
             
             let report = [
@@ -226,6 +258,16 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
                 "status": "Still there",
                 "userId": userObj.id!
             ]
+            
+            if userObj.reportAnonymously == false {
+                email = userObj.email
+                
+                
+                let emailReport = Report(reportKey: userObj.id, reportData: report as Dictionary<String, AnyObject>)
+                
+                sendEmailToUser(report: emailReport, email:email )
+            }
+            
             DataService.ds.REF_REPORTS.child(userObj.id).childByAutoId().setValue(report) { (error, ref) in
                 if error != nil{
                     print("error is \(error)")

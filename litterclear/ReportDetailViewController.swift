@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource  {
     @IBOutlet weak var timeTextField: UITextField!
@@ -32,6 +33,25 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
             timeTextField.text = report.time
             if let image = image {
                 reportImageView.image = image
+            } else{
+                let ref = FIRStorage.storage().reference(forURL: report.imageURL!)
+                    print("Image URL \(report.imageURL!)")
+                    ref.data(withMaxSize: 2 * 1024 * 1024, completion: { (data, error) in
+                 if error != nil {
+                    print("Unable to download image from Firebase storage")
+                 } else {
+                 print("Image downloaded from Firebase storage")
+                 if let imgData = data {
+                 if let img = UIImage(data: imgData) {
+                 
+                 //set the image here for forwarding
+                 
+                 self.reportImageView.image = img
+                 
+                 }
+                 }
+                 }
+                 })
             }
             addressTextView.text = report.address
             descriptionTextField.text = report.description
@@ -45,11 +65,10 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
             let userRole = user.role
             
             if userRole == "official"{
-                statusArray = ["Still there", "Removal confirmed"]
+                statusArray = ["Still there", "Removal claimed"]
             }
             
         }
-        
         
         statusPicker.delegate = self
         statusPicker.dataSource = self

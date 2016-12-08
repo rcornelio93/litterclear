@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SendGrid
 
 class ReportTableViewController: UITableViewController,UISearchBarDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
@@ -221,6 +222,23 @@ class ReportTableViewController: UITableViewController,UISearchBarDelegate {
         print("in unwind method")
         if let sourceViewController = sender.source as? ReportDetailViewController, let report = sourceViewController.report {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                let initialReport = reports[selectedIndexPath.row]
+                let origStatus = initialReport.status
+                
+                //Check for report status changed and anonymous user check
+                print("Initial Status : \(origStatus) ... After change status \(report.status)")
+                if let userRole = userObj?.role {
+                    if(userRole == "official"){
+                        if origStatus == report.status{
+                            print("Nothing to do. Status is not changed")
+                        } else {
+                            if userObj?.reportAnonymously == false {
+                                let email = userObj?.email
+                                sendEmailToUser(report: report, email:email! )
+                            }
+                        }
+                    }
+                }
                 
                 reports[selectedIndexPath.row] = report
                 
@@ -234,10 +252,42 @@ class ReportTableViewController: UITableViewController,UISearchBarDelegate {
                 
                 //update report status to firebase
                 DataService.ds.REF_REPORTS.child(report.userId).child(report.reportKey).updateChildValues(["status": report.status])
-                
+
             }
         }
     }
+    
+    func sendEmailToUser(report: Report, email:String){
+        
+        
+        let session = Session()
+        session.authentication = Authentication.apiKey("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")
+        
+        Session.shared.authentication = Authentication.apiKey("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")
+        
+        //session.authentication = Authentication.apiKey("9wJWd9yzQXi_XlC5HYPrHg")
+        //Session.shared.authentication = Authentication.apiKey("9wJWd9yzQXi_XlC5HYPrHg")
+        
+        
+        let personalization = Personalization(recipients: "neha.parmar@sjsu.edu")
+        let plainText = Content(contentType: ContentType.plainText, value: "Hey Dere")
+        let htmlText = Content(contentType: ContentType.htmlText, value: "<h1>Report Status Updated!</h1><br/><br/><b>Updated information:</b><br/><br/> Description: \(report.description)<br/> Severity: \(report.severity)<br/> Size: \(report.size)<br/> Time: \(report.time)<br/> Email: \(email)<br/> Address: \(report.address)<br/> Report Status: \(report.status)<br/><br/><br/><b>Support Team, LitterClear.com<b>")
+        
+        let email = Email(
+            personalizations: [personalization],
+            from: Address("support@litterclear.com"),
+            content: [plainText, htmlText],
+            subject: "Report Status Updated"
+        )
+        do {
+            try Session.shared.send(request: email)
+        } catch {
+            
+            print(error)
+        }
+        
+    }
+    
     @IBAction func backToProfile(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
