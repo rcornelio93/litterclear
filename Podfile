@@ -12,4 +12,5 @@ target 'litterclear' do
   pod 'Firebase/Storage'
   pod 'FBSDKLoginKit'
   pod 'GoogleSignIn'
+  pod 'SendGrid', :git => 'https://github.com/scottkawai/sendgrid-swift.git'
 end
