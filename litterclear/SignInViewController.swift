@@ -12,7 +12,7 @@ import FBSDKCoreKit
 import Firebase
 import GoogleSignIn
 
-class SignInViewController: UIViewController, GIDSignInUIDelegate {
+class SignInViewController: UIViewController, GIDSignInUIDelegate, UITextFieldDelegate {
 
     var userUID : String?
     var userEmail: String?
@@ -28,6 +28,8 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
         //googleButton.center = view.center
         view.addSubview(googleButton)
         GIDSignIn.sharedInstance().uiDelegate = self*/
+        emailaddressField.delegate = self
+        passwordField.delegate = self
         
     }
 
@@ -77,6 +79,13 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
                 } else {
                     FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
                         if error != nil{
+                            let screenNameAlert  = UIAlertController(title: "Invalid Password", message: "Please check your password again", preferredStyle: UIAlertControllerStyle.alert)
+                            screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                                self.dismiss(animated: true, completion: nil)
+                            }))
+                            self.present(screenNameAlert, animated: true, completion: nil)
+
+
                             print("LitterApp - Unable to authenticate with Firebase")
                         } else {
                             print("LitterApp - Successfully authenticated with Firebase")
@@ -163,7 +172,15 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate {
     }
     
     @IBAction func googleSignInAction(_ sender: Any) {
+        GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().signIn()
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Hide the keyboard.
+        textField.resignFirstResponder()
+        return true
+    }
+
 }
 
