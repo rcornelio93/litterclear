@@ -229,13 +229,9 @@ class ReportTableViewController: UITableViewController,UISearchBarDelegate {
                 print("Initial Status : \(origStatus) ... After change status \(report.status)")
                 if let userRole = userObj?.role {
                     if(userRole == "official"){
-                        if origStatus == report.status{
-                            print("Nothing to do. Status is not changed")
-                        } else {
-                            if userObj?.reportAnonymously == false {
-                                let email = userObj?.email
-                                sendEmailToUser(report: report, email:email! )
-                            }
+                        if userObj?.reportAnonymously == false {
+                            let email = userObj?.email
+                            sendEmailToUser(report: report, email:email! )
                         }
                     }
                 }
@@ -261,17 +257,18 @@ class ReportTableViewController: UITableViewController,UISearchBarDelegate {
         
         
         let session = Session()
-        session.authentication = Authentication.apiKey("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")
-        
-        Session.shared.authentication = Authentication.apiKey("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")
+        session.authentication = Authentication.apiKey("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")
+        print("Start sending emails")
+        Session.shared.authentication = Authentication.apiKey("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")
         
         //session.authentication = Authentication.apiKey("9wJWd9yzQXi_XlC5HYPrHg")
         //Session.shared.authentication = Authentication.apiKey("9wJWd9yzQXi_XlC5HYPrHg")
-        
-        
-        let personalization = Personalization(recipients: "neha.parmar@sjsu.edu")
+        print("sending eami now to ")
+        //let personalization = Personalization(recipients: report.email!)
+        let personalization = Personalization(recipients: report.email!)
+        print("Email to send to the user-email id : \(report.email)")
         let plainText = Content(contentType: ContentType.plainText, value: "Hey Dere")
-        let htmlText = Content(contentType: ContentType.htmlText, value: "<h1>Report Status Updated!</h1><br/><br/><b>Updated information:</b><br/><br/> Description: \(report.description)<br/> Severity: \(report.severity)<br/> Size: \(report.size)<br/> Time: \(report.time)<br/> Email: \(email)<br/> Address: \(report.address)<br/> Report Status: \(report.status)<br/><br/><br/><b>Support Team, LitterClear.com<b>")
+        let htmlText = Content(contentType: ContentType.htmlText, value: "<h1>Report Status Updated!</h1><br/><br/><b>Updated information:</b><br/><br/> Description: \(report.description!)<br/> Severity: \(report.severity)<br/> Size: \(report.size)<br/> Time: \(report.time!)<br/> Email: \(email)<br/> Address: \(report.address)<br/> Report Status: \(report.status)<br/><br/><br/><b>Support Team, LitterClear.com<b>")
         
         let email = Email(
             personalizations: [personalization],
