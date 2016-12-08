@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         usersRef.updateChildValues(values, withCompletionBlock: {(err, ref) in
             if let error = err  {
-                print (error)
+                print ("Error while registering user using google\(error)")
                 return
             }
         })

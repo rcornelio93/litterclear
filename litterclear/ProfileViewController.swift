@@ -91,7 +91,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
                         if let role = self.userObject?.role {
                             if role == "official" {
                                 self.myReportsButton.setImage(UIImage(named: "ic_folder_shared_white"), for: UIControlState.normal)
-                                self.myReportsButton.setTitle("All Residents Reports", for: UIControlState.normal)
+                                self.myReportsButton.setTitle("All City Reports", for: UIControlState.normal)
                             }
                         }
 
