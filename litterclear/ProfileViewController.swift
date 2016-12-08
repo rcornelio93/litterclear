@@ -47,12 +47,18 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
                         print("the user object address is \(self.userObject?.address)")
                         if let address = self.userObject?.address {
                             self.addressLabel.text = address
+                        }else{
+                            self.addressLabel.text = "Edit your address"
                         }
                         if let screenName = self.userObject?.screenName {
                             self.screenNameLabel.text = screenName
+                        } else {
+                            self.screenNameLabel.text = self.userObject?.email
                         }
                         if let fullName = self.userObject?.fullName {
                             self.fullNameLabel.text = fullName
+                        }else{
+                            self.fullNameLabel.text = "Edit your Full name"
                         }
                         if let profileImageURL = self.userObject?.profileImageURL {
                             //self.fullNameLabel.text = fullName
@@ -91,7 +97,7 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
                         if let role = self.userObject?.role {
                             if role == "official" {
                                 self.myReportsButton.setImage(UIImage(named: "ic_folder_shared_white"), for: UIControlState.normal)
-                                self.myReportsButton.setTitle("All City Reports", for: UIControlState.normal)
+                                self.myReportsButton.setTitle("City Reports", for: UIControlState.normal)
                             }
                         }
 
