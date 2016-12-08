@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     var window: UIWindow?
     var userUID: String?
     var userEmail: String?
-    var homeVC: SignInViewController?
+    //var homeVC: SignInViewController?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FIRApp.configure()
@@ -84,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().handle(openURL,
                                              sourceApplication: sourceApplication,
                                              annotation: annotation)
-        homeVC?.showHomeScreen()
+        //homeVC?.showHomeScreen()
         return handled
     }
 }
