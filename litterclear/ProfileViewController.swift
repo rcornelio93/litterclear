@@ -23,11 +23,14 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var litterNotificationSwitch: UISwitch!
     @IBOutlet weak var statusChangeNotificationSwitch: UISwitch!
+    @IBOutlet weak var myReportsButton: UIButton!
     
     @IBOutlet weak var reportAnonymousSwitch: UISwitch!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        /*myReportsButton.setImage(UIImage(named: "ic_folder_shared_white"), for: UIControlState.normal)
+        myReportsButton.setTitle("Resident Report", for: UIControlState.normal)*/
         profileImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
         profileImageView.isUserInteractionEnabled = true
         

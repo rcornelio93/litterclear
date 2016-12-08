@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     var window: UIWindow?
     var userUID: String?
     var userEmail: String?
-
+    var homeVC: SignInViewController?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FIRApp.configure()
@@ -45,10 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             if error != nil {
                 print("LitterApp - Unable to authenticate to firebase")
             } else {
-                print("LitterApp - Successfully authenticated to firebase \(user!.uid)")
+                print("LitterApp - Successfully authenticated to firebase after google \(user!.uid)")
                 self.userUID = user!.uid
                 self.userEmail = user!.email
-                
+                let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+                let homeVC = storyboard.instantiateViewController(withIdentifier: "homeView") as! HomeViewController
+                homeVC.userUID = user!.uid
+                self.window?.rootViewController?.present(homeVC, animated: true, completion: nil)
             }
         })
     }
@@ -81,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         GIDSignIn.sharedInstance().handle(openURL,
                                              sourceApplication: sourceApplication,
                                              annotation: annotation)
-
+        homeVC?.showHomeScreen()
         return handled
     }
 }
