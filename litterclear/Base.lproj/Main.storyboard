@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11535.1" systemVersion="16A304a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11523"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -188,8 +188,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile View" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egy-dL-Oue">
-                                <rect key="frame" x="149.5" y="40" width="76.5" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile View" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="egy-dL-Oue">
+                                <rect key="frame" x="113" y="40" width="150" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="cAG-oR-9oZ"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -276,8 +279,8 @@
                                     <action selector="fullNameEditAlert:" destination="Xf2-j1-1Hl" eventType="touchUpInside" id="QAf-Ye-mwM"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Rayan Cornelio" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l9c-45-lLh" userLabel="nameLabel">
-                                <rect key="frame" x="97" y="262" width="160" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rayan Cornelio" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l9c-45-lLh" userLabel="nameLabel">
+                                <rect key="frame" x="87.5" y="257" width="200" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="CAl-gV-7rl"/>
                                     <constraint firstAttribute="width" constant="200" id="y93-bF-EV3"/>
@@ -294,16 +297,19 @@
                                     <action selector="addressEditAlert:" destination="Xf2-j1-1Hl" eventType="touchUpInside" id="EBk-mg-Jfj"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q9Y-nN-ThO" userLabel="screenNameEditButton">
-                                <rect key="frame" x="241" y="42" width="16" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q9Y-nN-ThO" userLabel="screenNameEditButton">
+                                <rect key="frame" x="267" y="40" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="lXr-BH-2az"/>
+                                    <constraint firstAttribute="width" constant="16" id="qTH-pp-dL2"/>
+                                </constraints>
                                 <state key="normal" image="ic_mode_edit_white"/>
                                 <connections>
                                     <action selector="screenNameEditAlert:" destination="Xf2-j1-1Hl" eventType="touchUpInside" id="Sye-3v-AKR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MjR-cU-HIB" userLabel="myReportsButton">
-                                <rect key="frame" x="137" y="375" width="99" height="24"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MjR-cU-HIB" userLabel="myReportsButton">
+                                <rect key="frame" x="112.5" y="368" width="150" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="XM6-4W-vfO"/>
                                     <constraint firstAttribute="width" constant="150" id="dk8-nS-SKH"/>
@@ -331,6 +337,8 @@
                             <constraint firstItem="SJS-px-PhR" firstAttribute="width" secondItem="upO-54-YEC" secondAttribute="width" multiplier="0.9" id="FAr-XA-sID"/>
                             <constraint firstItem="l9c-45-lLh" firstAttribute="top" secondItem="7X0-u5-eyz" secondAttribute="bottom" constant="30" id="Ojd-Sm-iGw"/>
                             <constraint firstItem="egy-dL-Oue" firstAttribute="top" secondItem="GWZ-ty-krE" secondAttribute="bottom" constant="20" id="P1L-9t-9dF"/>
+                            <constraint firstItem="Q9Y-nN-ThO" firstAttribute="leading" secondItem="egy-dL-Oue" secondAttribute="trailing" constant="4" id="PdH-bn-cs4"/>
+                            <constraint firstItem="Q9Y-nN-ThO" firstAttribute="top" secondItem="GWZ-ty-krE" secondAttribute="bottom" constant="20" id="PuQ-c6-giV"/>
                             <constraint firstItem="MjR-cU-HIB" firstAttribute="top" secondItem="s5B-Gz-shy" secondAttribute="bottom" constant="30" id="WyU-H8-Siy"/>
                             <constraint firstItem="egy-dL-Oue" firstAttribute="centerX" secondItem="upO-54-YEC" secondAttribute="centerX" id="XeN-DF-cbV"/>
                             <constraint firstItem="s5B-Gz-shy" firstAttribute="centerX" secondItem="upO-54-YEC" secondAttribute="centerX" id="Ysf-uK-0UW"/>
@@ -850,7 +858,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="i7m-VT-bvN" userLabel="list" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="list_tab_icon" id="edS-2z-nph"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mt7-Ia-m6R">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mt7-Ia-m6R">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -868,7 +876,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AIP-p5-03R" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="yHj-jd-PRG">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yHj-jd-PRG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -887,7 +895,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mBK-aT-KJG" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="map_tab_icon" id="ktN-HL-3xq"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="U4F-r8-UXg">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="U4F-r8-UXg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
