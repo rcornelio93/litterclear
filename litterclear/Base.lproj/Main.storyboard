@@ -14,7 +14,7 @@
         <!--Sign In View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SignInViewController" customModule="litterclear" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="signInView" id="BYZ-38-t0r" customClass="SignInViewController" customModule="litterclear" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -402,6 +402,17 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MLg-zq-QHi">
+                                <rect key="frame" x="325" y="40" width="30" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="PgS-Wy-Mn7"/>
+                                    <constraint firstAttribute="width" constant="30" id="m49-ug-BYR"/>
+                                </constraints>
+                                <state key="normal" image="sign-out"/>
+                                <connections>
+                                    <action selector="signOutAction:" destination="308-4Y-zbL" eventType="touchUpInside" id="m07-hk-ajR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -410,7 +421,9 @@
                             <constraint firstItem="fJI-kq-skn" firstAttribute="top" secondItem="q9t-Wb-pY0" secondAttribute="bottom" constant="20" id="hW6-7z-6sy"/>
                             <constraint firstItem="seS-vc-yqu" firstAttribute="centerY" secondItem="2GU-jC-yeC" secondAttribute="centerY" id="lW6-pW-eet"/>
                             <constraint firstItem="N35-Z3-b7E" firstAttribute="centerX" secondItem="2GU-jC-yeC" secondAttribute="centerX" id="niD-FE-IRb"/>
+                            <constraint firstAttribute="trailing" secondItem="MLg-zq-QHi" secondAttribute="trailing" constant="20" id="qyq-Vd-ewT"/>
                             <constraint firstItem="seS-vc-yqu" firstAttribute="centerX" secondItem="2GU-jC-yeC" secondAttribute="centerX" id="rQA-4m-V7j"/>
+                            <constraint firstItem="MLg-zq-QHi" firstAttribute="top" secondItem="q9t-Wb-pY0" secondAttribute="bottom" constant="20" id="sWP-kr-igA"/>
                         </constraints>
                     </view>
                     <connections>
@@ -434,9 +447,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Lj-vE-H12">
-                                <rect key="frame" x="266" y="36" width="104" height="29"/>
+                                <rect key="frame" x="282" y="36" width="69" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Take picture" image="ic_photo_camera_white">
+                                <state key="normal" title="Retake" image="ic_photo_camera_white">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -510,7 +523,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PBo-kI-1rD">
-                                <rect key="frame" x="8" y="36" width="48" height="29"/>
+                                <rect key="frame" x="8" y="36" width="45" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Cancel">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -526,7 +539,6 @@
                             <constraint firstItem="aCm-Jf-iRv" firstAttribute="top" secondItem="zgM-5a-Y7F" secondAttribute="bottom" constant="16" id="7gb-kZ-o4L"/>
                             <constraint firstItem="PBo-kI-1rD" firstAttribute="leading" secondItem="MMD-uJ-npH" secondAttribute="leading" constant="8" id="HcF-8y-q4j"/>
                             <constraint firstItem="JD1-4U-80w" firstAttribute="centerX" secondItem="MMD-uJ-npH" secondAttribute="centerX" id="I2V-HG-SdT"/>
-                            <constraint firstItem="1Lj-vE-H12" firstAttribute="leading" secondItem="PBo-kI-1rD" secondAttribute="trailing" constant="210" id="Llq-OR-a3r"/>
                             <constraint firstItem="1Lj-vE-H12" firstAttribute="top" secondItem="5lh-va-yVe" secondAttribute="bottom" constant="16" id="P0c-Ne-l10"/>
                             <constraint firstItem="aCm-Jf-iRv" firstAttribute="centerX" secondItem="MMD-uJ-npH" secondAttribute="centerX" id="QND-Yu-CMc"/>
                             <constraint firstItem="abk-sd-ddT" firstAttribute="top" secondItem="JD1-4U-80w" secondAttribute="bottom" constant="24" id="QT7-XT-fOi"/>
@@ -534,7 +546,7 @@
                             <constraint firstItem="zgM-5a-Y7F" firstAttribute="centerX" secondItem="MMD-uJ-npH" secondAttribute="centerX" id="ZOY-z3-JPx"/>
                             <constraint firstItem="zgM-5a-Y7F" firstAttribute="width" secondItem="MMD-uJ-npH" secondAttribute="width" id="h8E-CA-BwV"/>
                             <constraint firstItem="PBo-kI-1rD" firstAttribute="top" secondItem="5lh-va-yVe" secondAttribute="bottom" constant="16" id="n5i-nB-ayb"/>
-                            <constraint firstItem="1Lj-vE-H12" firstAttribute="leading" secondItem="MMD-uJ-npH" secondAttribute="leadingMargin" constant="250" id="nwv-Le-T7L"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1Lj-vE-H12" secondAttribute="trailing" constant="8" id="pyi-dl-3SF"/>
                             <constraint firstItem="zgM-5a-Y7F" firstAttribute="top" secondItem="1Lj-vE-H12" secondAttribute="bottom" constant="16" id="qlX-3t-Xp1"/>
                             <constraint firstItem="zgM-5a-Y7F" firstAttribute="top" secondItem="PBo-kI-1rD" secondAttribute="bottom" constant="16" id="sW3-2G-dkC"/>
                             <constraint firstItem="aCm-Jf-iRv" firstAttribute="width" secondItem="MMD-uJ-npH" secondAttribute="width" multiplier="0.9" id="xmQ-dC-CWC"/>
@@ -889,6 +901,7 @@
         <image name="list_tab_icon" width="24" height="24"/>
         <image name="map_tab_icon" width="24" height="24"/>
         <image name="profile-image" width="600" height="600"/>
+        <image name="sign-out" width="92" height="65"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="SQa-R1-kR3"/>

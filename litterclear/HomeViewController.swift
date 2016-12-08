@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
 
 class HomeViewController : UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     
@@ -61,7 +62,7 @@ class HomeViewController : UIViewController,UIImagePickerControllerDelegate,UINa
         let imagePickerController = UIImagePickerController()
         
         // Only allow photos to be taken.
-        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.sourceType = .camera
         
         // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self
@@ -93,4 +94,13 @@ class HomeViewController : UIViewController,UIImagePickerControllerDelegate,UINa
 
     }
 
+    @IBAction func signOutAction(_ sender: Any) {
+        try! FIRAuth.auth()!.signOut()
+        if let storyboard = self.storyboard {
+            let signInVC = self.storyboard?.instantiateViewController(withIdentifier: "signInView") as! SignInViewController
+            present(signInVC, animated: true, completion: nil)
+        }
+
+
+    }
 }

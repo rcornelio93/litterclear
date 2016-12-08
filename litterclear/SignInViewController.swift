@@ -63,12 +63,29 @@ class SignInViewController: UIViewController, GIDSignInUIDelegate, UITextFieldDe
                 print("LitterApp - Successfully authenticated to firebase")
                 self.userUID = user?.uid
                 self.userEmail = user!.email
+                let role: String?
+                if self.userEmail!.contains("@gmail.com"){
+                    role = "official"
+                }else{
+                    role = "resident"
+                }
+                let values = ["userid": self.userUID!, "email": self.userEmail!, "role": role!, "reportAnonymously": "false"]
+                self.registerUserIntoDatabase(uid: self.userUID!, values: values as [String : AnyObject])
+
                 self.showHomeScreen()
             }
         })
     }
     
     @IBAction func emailSignIn(_ sender: Any) {
+        if emailaddressField.text == "" || passwordField.text == "" {
+            let screenNameAlert  = UIAlertController(title: "Incorrect details", message: "Please enter username/password", preferredStyle: UIAlertControllerStyle.alert)
+            screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            self.present(screenNameAlert, animated: true, completion: nil)
+            
+        }
         if let email = emailaddressField.text, let password = passwordField.text {
             FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error == nil {

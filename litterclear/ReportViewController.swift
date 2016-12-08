@@ -65,7 +65,7 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
         locationManager.startUpdatingLocation()
         
         //Only allow photos to be taken.
-        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.sourceType = .camera
 
         // Make sure ViewController is notified when the user picks an image.
         imagePickerController.delegate = self
