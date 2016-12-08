@@ -61,6 +61,11 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         })*/
         centerMapOnLocation(location: initialLocation)
         
+        if reports.count == 0 {
+            print("No report here... initialize now ...")
+            initialeReports()
+        }
+        
         loadFromDB()
         if (userAnnos != nil){
             print("Calling to map annotation on the Map.\n")
@@ -69,6 +74,33 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         mapView.addAnnotations(userAnnos)
         print("UserAnnotations on the Map. \(userAnnos)")
         mapView.delegate = self
+    }
+    
+    func initialeReports(){
+        
+        DataService.ds.REF_REPORTS.observe(.value, with: { (snapshot) in
+        self.reports = []
+        DataService.ds.REF_REPORTS.child((self.userObj?.id)!).observe(.value, with: { (snapshot) in
+            
+            self.reports = [] // THIS IS THE NEW LINE
+            
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                for snap in snapshot {
+                    //print("SNAP: \(snap)")
+                    if let reportDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        let report = Report(reportKey: key, reportData: reportDict)
+                        self.reports.append(report)
+                        
+                    }
+                }
+            }
+            
+        })
+        
+        })
+        print("Elements added to report :: \(reports.count)")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -124,7 +156,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                                     //init(title: String, address: String, size: String,coordinate: CLLocationCoordinate2D)
                                     print("Report info .. \(Double(report.latitude)) ... \(Double(report.longitude))")
                                     let userAnno = UserAnnotation(title: report.description!,address: report.address!, size: report.size!,coordinate:CLLocationCoordinate2D(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!))
-                                    //print("UserAnnotation is created here --> \(userAnno)")
+                                    print("UserAnnotation is created here --> \(userAnno)")
                                     
                                     self.mapView.addAnnotation(userAnno)
                                     self.userAnnos.append(userAnno)
@@ -235,7 +267,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         print("Annotation whenever added it comes here...")
         
         let indexOfReport = userAnnos.index(of: view.annotation as! UserAnnotation)
-        print("reportIndex .... \(indexOfReport!) .. location \(location.coordinate)")
+        print("reportIndex .... \(indexOfReport!) .. location \(location.coordinate) ... reports count \(reports.count)")
         
         let report:Report = reports[indexOfReport!]
         
@@ -296,7 +328,13 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         self.tabBarController?.tabBar.isHidden = false
         if let sourceViewController = sender.source as? ReportDetailViewController, let report = sourceViewController.report {
             DataService.ds.REF_REPORTS.child(report.userId).child(report.reportKey).updateChildValues(["status": report.status])
+            
         }
+        let allAnnotations = self.mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
+
+        loadFromDB()
+        
     }
     
     /*func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
