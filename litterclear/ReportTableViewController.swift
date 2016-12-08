@@ -9,9 +9,11 @@
 import UIKit
 import Firebase
 
-class ReportTableViewController: UITableViewController {
+class ReportTableViewController: UITableViewController,UISearchBarDelegate {
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var reports = [Report]()
+    var baseReports = [Report]()
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
     var userObj: User?
 
@@ -24,6 +26,8 @@ class ReportTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
+        searchBar.delegate = self
+        
         if let userObj = userObj {
             print("id: \(userObj.id) email: \(userObj.email) role: \(userObj.role) reportAnonymously: \(userObj.reportAnonymously)")
             
@@ -32,7 +36,7 @@ class ReportTableViewController: UITableViewController {
                 
                 DataService.ds.REF_REPORTS.child(userObj.id).observe(.value, with: { (snapshot) in
                     
-                    self.reports = [] // THIS IS THE NEW LINE
+                    self.baseReports = [] // THIS IS THE NEW LINE
                     
                     if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
                         for snap in snapshot {
@@ -40,19 +44,25 @@ class ReportTableViewController: UITableViewController {
                             if let reportDict = snap.value as? Dictionary<String, AnyObject> {
                                 let key = snap.key
                                 let report = Report(reportKey: key, reportData: reportDict)
-                                self.reports.append(report)
+                                self.baseReports.append(report)
                             }
                         }
                     }
+                    self.reports = []
+                    
+                    for report in self.baseReports {
+                        self.reports.append(report)
+                    }
+                    print("reports size \(self.reports.count) baseReport size \(self.baseReports.count)")
                     
                     self.tableView.reloadData()
                 })
             } else { //officer
-                navigationItem.title = "Resident Reports"
+                navigationItem.title = "All Resident Reports"
                 
                 DataService.ds.REF_REPORTS.observe(.value, with: { (snapshot) in
                     
-                    self.reports = [] // THIS IS THE NEW LINE
+                    self.baseReports = [] // THIS IS THE NEW LINE
                     
                     if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
                         for snap in snapshot {
@@ -60,23 +70,30 @@ class ReportTableViewController: UITableViewController {
                             if let subsnap = snap.children.allObjects as? [FIRDataSnapshot] {
                                 for sub in subsnap {
                                     if let reportDict = sub.value as? Dictionary<String, AnyObject> {
-                                        let key = snap.key
+                                        let key = sub.key
                                         let report = Report(reportKey: key, reportData: reportDict)
-                                        self.reports.append(report)
+                                        self.baseReports.append(report)
                                     }
                                 }
                             }
                         }
                     }
+                    self.reports = []
+                    
+                    for report in self.baseReports {
+                        self.reports.append(report)
+                    }
+                    print("reports size \(self.reports.count) baseReport size \(self.baseReports.count)")
                     
                     self.tableView.reloadData()
+                    
                 })
             }
         
         } else {
             print("ERROR: USER IS NIL")
         }
-
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -113,6 +130,34 @@ class ReportTableViewController: UITableViewController {
         }
 
         return cell
+    }
+    
+    //MARK: search bar
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("search: \(searchText)")
+        var tempReport = [Report]()
+        for report in baseReports {
+            if let userObj = userObj {
+                if userObj.role == "official" {
+                    if report.email.lowercased().contains(searchText.lowercased()) || report.status.lowercased().contains(searchText.lowercased()) {
+                        tempReport.append(report)
+                    }
+                } else {
+                    if report.status.lowercased().contains(searchText.lowercased()) {
+                        tempReport.append(report)
+                    }
+                }
+            }
+        }
+        print("[searchBar] tempReport size: \(tempReport.count)")
+        if tempReport.count > 0 {
+            reports = tempReport
+        } else if searchText == "" {
+            reports = baseReports
+        } else {
+            reports = []
+        }
+        self.tableView.reloadData()
     }
     
 
@@ -178,10 +223,17 @@ class ReportTableViewController: UITableViewController {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 
                 reports[selectedIndexPath.row] = report
+                
+                for r in baseReports {
+                    if r.reportKey == report.reportKey {
+                        r.status = report.status
+                    }
+                }
+                
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
                 
                 //update report status to firebase
-                DataService.ds.REF_REPORTS.child(report.reportKey).updateChildValues(["status": report.status])
+                DataService.ds.REF_REPORTS.child(report.userId).child(report.reportKey).updateChildValues(["status": report.status])
                 
             }
         }

@@ -14,6 +14,7 @@ class ReportTableViewCell: UITableViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
 
+    @IBOutlet weak var emailLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -30,6 +31,7 @@ class ReportTableViewCell: UITableViewCell {
         
         self.statusLabel.text = report.status
         self.timeLabel.text = report.time
+        self.emailLabel.text = report.email
         
         if img != nil {
             self.reportImageView.image = img

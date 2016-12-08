@@ -146,7 +146,7 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
                                 if let subsnap = snap.children.allObjects as? [FIRDataSnapshot] {
                                     for sub in subsnap {
                                         if let reportDict = sub.value as? Dictionary<String, AnyObject> {
-                                            let key = snap.key
+                                            let key = sub.key
                                             let report = Report(reportKey: key, reportData: reportDict)
                                             self.reports.append(report)
                                             

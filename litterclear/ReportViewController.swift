@@ -223,7 +223,8 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
                 "latitude": String(latitude),
                 "longitude": String(longitude),
                 "address" : self.address,
-                "status": "Still there"
+                "status": "Still there",
+                "userId": userObj.id!
             ]
             DataService.ds.REF_REPORTS.child(userObj.id).childByAutoId().setValue(report) { (error, ref) in
                 if error != nil{

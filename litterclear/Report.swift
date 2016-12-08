@@ -19,6 +19,8 @@ public class Report {
     var time: String!
     var status: String!
     var reportKey: String!
+    var userId: String!
+    var email: String!
     
     init(reportKey: String, reportData: Dictionary<String, AnyObject>) {
         self.reportKey = reportKey
@@ -59,5 +61,12 @@ public class Report {
             self.status = status
         }
         
+        if let userId = reportData["userId"] as? String {
+            self.userId = userId
+        }
+
+        if let email = reportData["email"] as? String {
+            self.email = email
+        }
     }
 }
