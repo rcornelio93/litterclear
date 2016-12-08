@@ -291,7 +291,13 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
         dismiss(animated: true, completion: nil)
     }
     
-    
+    @IBAction func unwindToReportList(sender: UIStoryboardSegue) {
+        print("in unwind method map")
+        self.tabBarController?.tabBar.isHidden = false
+        if let sourceViewController = sender.source as? ReportDetailViewController, let report = sourceViewController.report {
+            DataService.ds.REF_REPORTS.child(report.userId).child(report.reportKey).updateChildValues(["status": report.status])
+        }
+    }
     
     /*func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         

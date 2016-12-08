@@ -220,6 +220,7 @@ class ReportTableViewController: UITableViewController,UISearchBarDelegate {
     
     @IBAction func unwindToReportList(sender: UIStoryboardSegue) {
         print("in unwind method")
+        self.tabBarController?.tabBar.isHidden = false
         if let sourceViewController = sender.source as? ReportDetailViewController, let report = sourceViewController.report {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 let initialReport = reports[selectedIndexPath.row]
@@ -250,6 +251,7 @@ class ReportTableViewController: UITableViewController,UISearchBarDelegate {
                 DataService.ds.REF_REPORTS.child(report.userId).child(report.reportKey).updateChildValues(["status": report.status])
 
             }
+            //navigationController!.popViewController(animated: true)
         }
     }
     

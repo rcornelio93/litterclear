@@ -73,6 +73,8 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
         statusPicker.delegate = self
         statusPicker.dataSource = self
         statusTextField.inputView = statusPicker
+        
+        self.tabBarController?.tabBar.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,6 +104,7 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
     
     @IBAction func goBackToReportList(_ sender: UIBarButtonItem) {
         navigationController!.popViewController(animated: true)
+        self.tabBarController?.tabBar.isHidden = false
     }
 
     /*
