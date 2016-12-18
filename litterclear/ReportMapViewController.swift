@@ -22,6 +22,8 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     var userAnnos = [UserAnnotation]()
     
     var firstTime = false
+    // Take current location here
+    var userCurrentLoc = CLLocation()
     var initialLocation = CLLocation(latitude: 37.322993, longitude: -121.883200)
     
     var userObj: User?
@@ -105,10 +107,23 @@ class ReportMapViewController: UIViewController, MKMapViewDelegate, CLLocationMa
     
     override func viewDidAppear(_ animated: Bool) {
         locationAuthStatus()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.startUpdatingLocation()
+        
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        var userLocation:CLLocation = locations[0] as! CLLocation
+        let long = userLocation.coordinate.longitude;
+        let lat = userLocation.coordinate.latitude;
+        var userCurrentLoc =   CLLocationCoordinate2D(latitude: lat, longitude: long);
+        print("Got updated Location:\(userCurrentLoc)")
+        //Do What ever you want with it
     }
     
     func locationAuthStatus() {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            
             mapView.showsUserLocation = true
         } else {
             locationManager.requestWhenInUseAuthorization()
