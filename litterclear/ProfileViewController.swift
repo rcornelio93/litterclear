@@ -192,10 +192,13 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
         
         screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let textField = screenNameAlert.textFields![0] as UITextField
-            self.screenNameLabel.text = textField.text!
-            let values = ["screenName" : self.screenNameLabel.text]
-            self.updateUserProfile(uid: self.userUID!, values: values as! [String : String])
-            self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
+            let scrName = textField.text ?? ""
+            if !scrName.isEmpty {
+                self.screenNameLabel.text = textField.text!
+                let values = ["screenName" : self.screenNameLabel.text]
+                self.updateUserProfile(uid: self.userUID!, values: values as! [String : String])
+                self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
+            }
 
         }))
         
@@ -215,10 +218,13 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
         
         fullNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let textField = fullNameAlert.textFields![0] as UITextField
-            self.fullNameLabel.text = textField.text!
-            let values = ["fullName" : self.fullNameLabel.text]
-            self.updateUserProfile(uid: self.userUID!, values: values as! [String : String])
-            self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
+            let fName = textField.text ?? ""
+            if !fName.isEmpty {
+                self.fullNameLabel.text = textField.text!
+                let values = ["fullName" : self.fullNameLabel.text]
+                self.updateUserProfile(uid: self.userUID!, values: values as! [String : String])
+                self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
+            }
         }))
         
         fullNameAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
@@ -263,11 +269,14 @@ class ProfileViewController : UIViewController, UIImagePickerControllerDelegate,
         
         addressAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let textField = addressAlert.textFields![0] as UITextField
-            self.addressLabel.text = textField.text!
-            let values = ["address" : self.addressLabel.text!]
-            print("The new value of text is \(self.addressLabel.text!)")
-            self.updateUserProfile(uid: self.userUID!, values: values )
-            self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
+            let address = textField.text  ?? ""
+            if !address.isEmpty {
+                self.addressLabel.text = textField.text!
+                let values = ["address" : self.addressLabel.text!]
+                print("The new value of text is \(self.addressLabel.text!)")
+                self.updateUserProfile(uid: self.userUID!, values: values )
+                self.userObject  =  User(userId: self.userUID!, userData: values as Dictionary<String, AnyObject>)
+            }
         }))
         
         addressAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in

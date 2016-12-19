@@ -97,22 +97,33 @@ class ReportViewController: UIViewController,UIImagePickerControllerDelegate,UIN
     }
     
     @IBAction func doReport(_ sender: UIButton) {
-        if let img = photoImageView.image {
-            if let imgData = UIImageJPEGRepresentation(img, 0.2) {
-                let imgUID = NSUUID().uuidString
-                let metadata = FIRStorageMetadata()
-                metadata.contentType = "image/jpeg"
-                DataService.ds.REF_IMAGE.child(imgUID).put(imgData, metadata: metadata, completion:  { (metadata, error) in
-                    if error != nil {
-                        print("DataService: upload image to Firebase Storage failed.")
-                    } else {
-                        print("DataService: upload image to Firebase Storage successful.")
-                        if let downloadURL = metadata!.downloadURL()?.absoluteString {
-                            print(downloadURL)
-                            self.sendReportToFirebase(imgURL: downloadURL)
+        let desc = descriptionTextField.text ?? ""
+        let size = sizeTextField.text ?? ""
+        let severity = severityTextField.text ?? ""
+        if (photoImageView.image == nil || desc.isEmpty || size.isEmpty || severity.isEmpty) {
+            let screenNameAlert  = UIAlertController(title: "Alert", message: "Please provide valid information for your litter report.", preferredStyle: UIAlertControllerStyle.alert)
+            screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+//                self.dismiss(animated: true, completion: nil)
+            }))
+            self.present(screenNameAlert, animated: true, completion: nil)
+        } else {
+            if let img = photoImageView.image {
+                if let imgData = UIImageJPEGRepresentation(img, 0.2) {
+                    let imgUID = NSUUID().uuidString
+                    let metadata = FIRStorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    DataService.ds.REF_IMAGE.child(imgUID).put(imgData, metadata: metadata, completion:  { (metadata, error) in
+                        if error != nil {
+                            print("DataService: upload image to Firebase Storage failed.")
+                        } else {
+                            print("DataService: upload image to Firebase Storage successful.")
+                            if let downloadURL = metadata!.downloadURL()?.absoluteString {
+                                print(downloadURL)
+                                self.sendReportToFirebase(imgURL: downloadURL)
+                            }
                         }
-                    }
-                })
+                    })
+                }
             }
         }
     }
