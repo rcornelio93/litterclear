@@ -8,8 +8,9 @@
 
 import UIKit
 import Firebase
+import MapKit
 
-class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource  {
+class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, CLLocationManagerDelegate  {
     @IBOutlet weak var timeTextField: UITextField!
     @IBOutlet weak var reportImageView: UIImageView!
     @IBOutlet weak var addressTextView: UITextView!
@@ -24,6 +25,11 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
     
     var statusArray = ["Still there", "Removal claimed", "Removal confirmed"]
     var statusPicker = UIPickerView()
+    var reportedLoc:CLLocation = CLLocation()
+    var currentLoc:CLLocation = CLLocation()
+    var latitude: Double = 0
+    var longitude: Double = 0
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +58,18 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
                  }
                  }
                  })
+            
             }
+            // For checking distance
+            self.locationManager.requestWhenInUseAuthorization()
+            locationManager.delegate = self
+            //  locationManager.requestLocation()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+            
+            //Initialize report location
+            reportedLoc = CLLocation(latitude: Double(report.latitude)!, longitude: Double(report.longitude)!)
+            print("Reported location is here : \(report.latitude) \(report.longitude)")
             addressTextView.text = report.address
             descriptionTextField.text = report.description
             sizeTextField.text = report.size
@@ -99,7 +116,40 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
         if statusTextField.text != nil {
             report!.status = statusTextField.text!
         }
-        statusTextField.resignFirstResponder()
+        //Check for distance from reported location
+        
+        let validDistance = distanceValidBetweenTwoLocations(source: reportedLoc, destination: currentLoc)
+        print("Distance is  :: \(validDistance) ")
+        
+        if validDistance == true {
+            statusTextField.resignFirstResponder()
+        } else {
+            
+            print("report cannot be filed")
+            let screenNameAlert  = UIAlertController(title: "Cannot update report", message: "Please be in 30 feet distance while updating", preferredStyle: UIAlertControllerStyle.alert)
+            screenNameAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                //self.dismiss(animated: true, completion: nil)
+            }))
+            self.present(screenNameAlert, animated: true, completion: nil)
+            
+            print("Cannot be updated. Distance from location should not be more than 30 feet")
+            //return
+        }
+        
+        
+        
+    }
+    
+    func distanceValidBetweenTwoLocations(source:CLLocation,destination:CLLocation) -> Bool{
+        print("source:  \(source.coordinate.longitude) , \(source.coordinate.latitude) destination:  \(destination.coordinate.longitude) , \(destination.coordinate.latitude)")
+        
+        let distanceMeters = source.distance(from: destination)
+        //let distanceMeter: Double = distanceMeters
+        print("Distance : \(distanceMeters)")
+        //let roundedTwoDigit = distanceKM.roundedTwoDigit
+        //return 30 feet = 9.144 meters
+        return distanceMeters < 9.144
+        
     }
     
     @IBAction func goBackToReportList(_ sender: UIBarButtonItem) {
@@ -107,6 +157,16 @@ class ReportDetailViewController: UIViewController,UIPickerViewDelegate, UIPicke
         self.tabBarController?.tabBar.isHidden = false
     }
 
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            //longitude = location.coordinate.longitude;
+            //latitude = location.coordinate.latitude;
+            
+            currentLoc = location
+        }
+        print("Current location is = \(currentLoc.coordinate.latitude) \(currentLoc.coordinate.longitude)")
+    }
+    
     /*
     // MARK: - Navigation
 
